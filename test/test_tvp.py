@@ -16,7 +16,7 @@ import pandas as pd
 Folder = os.path.dirname(__file__)
 ParentFolder = os.path.dirname(Folder)
 sys.path.insert(0, '{}/tvp'.format(ParentFolder))
-import test_tvp
+import tvp
 
 
 class TestParentMethods(unittest.TestCase):
@@ -34,8 +34,8 @@ class TestRandomValidTS(unittest.TestCase):
     def setUp(self):
         """#TODOC"""
         # Generate valid data
-        self.valid_data = self.generate_valid_ts()
-        self.valid_series = test_tvp.TVPSeries(self.valid_data)
+        valid_data = self.generate_valid_ts()
+        self.valid_series = tvp.TVPSeries(index = valid_data.index, data=valid_data.values)
 
     def test_instance(self):
         self.assertIsInstance(self.valid_series, 'TVPSeries')
@@ -77,5 +77,4 @@ def suite():
 if __name__ == '__main__':
     runner = unittest.TextTestRunner()
     test_suite = suite()
-    print test_suite
     runner.run(test_suite)
