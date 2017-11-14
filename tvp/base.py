@@ -6,9 +6,14 @@ And that the variable is numeric
 """
 
 import inspect
+import logging
 
+import numpy as np
 import pandas as pd
 from pandas.core.generic import NDFrame
+from pandas.core.internals import SingleBlockManager
+
+logging.basicConfig(filename='debug.log', level=logging.DEBUG)
 
 
 # User defined exceptions
@@ -53,7 +58,7 @@ class TVPBase(NDFrame):
         if index.inferred_freq is None:
             raise NotFixedFrequencyError('Index has no fixed frequency')
 
-        return NDFrame.__new__(cls, *args, **kwargs)
+        return NDFrame.__new__(cls, args, kwargs)
 
     @classmethod
     def _buildargdict(cls, args, kwargs):
@@ -85,6 +90,10 @@ class TVPBase(NDFrame):
 
         return user_dict
 
+    @property
+    def _constructor_expanddim(self):
+        return TVPBase
+
 
 class TVPSeries(TVPBase, pd.Series):
     """Time-value paired pandas Series
@@ -93,8 +102,6 @@ class TVPSeries(TVPBase, pd.Series):
     increasing pd.DatetimeIndex with fixed frequency.
     
     TVPSeries are instantiated as a pandas.Series
-    
-    _.
         
     Examples
     --------
@@ -147,6 +154,21 @@ class TVPSeries(TVPBase, pd.Series):
         If index has no fixed frequency    
     """
 
+    def __init__(self, data=None, index=None, dtype=None, name=None, copy=False, fastpath=False):
+
+        # checking if data is a list
+
+        # checking if data is SingleBlockManager
+        if isinstance(data, SingleBlockManager):
+            data = data.get_values()
+
+        data = np.array(data)
+
+        if not np.issubdtype(data.dtype, np.number):
+            logging.debug(type(data))
+            raise TypeError('Values are not numeric')
+        super(TVPSeries, self).__init__(data, index, dtype, name, copy, fastpath)
+
     @property
     def _constructor(self):
         return TVPSeries
@@ -162,7 +184,30 @@ class TVPDataFrame(TVPBase, pd.DataFrame):
     This class constraints pandas DataFrame to have a monotonic 
     increasing pd.DatetimeIndex with fixed frequency.
     
+    When sliced, a TVPDataFrame return a TVPSeries.
+    
+    Examples:
+    ---------
+    
+    >>> date_range = pd.date_range(start='2010-05-05', periods=5)
+    >>> values = np.zeros(shape=(5,2))
+    >>> cols = ['col1', 'col2']
+    >>> tdf = TVPDataFrame(data = values, index=date_range, columns=cols)
+    >>> print tdf
+                col1  col2
+    2010-05-05   0.0   0.0
+    2010-05-06   0.0   0.0
+    2010-05-07   0.0   0.0
+    2010-05-08   0.0   0.0
+    2010-05-09   0.0   0.0
+    
     """
+
+    def __init__(self, data=None, index=None, columns=None, dtype=None, copy=False):
+        data = np.array(data)
+        if not np.issubdtype(data.dtype, np.number):
+            raise TypeError('Values are not numeric')
+        super(TVPDataFrame, self).__init__(data, index, columns, dtype, copy)
 
     @property
     def _constructor(self):
