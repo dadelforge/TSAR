@@ -4,18 +4,19 @@ The purposes of the time series library is to ensure that time series index is c
 And that the variable is numeric
 
 """
-#TODO: __new__ with positionnal arguments
+
+# TODO: implement forgiveness for empty series and df
+# TODO: implement is numeric
 
 import inspect
-import numpy as np
 import pandas as pd
-from pandas.core.base import IndexOpsMixin
 from pandas.core.generic import NDFrame
 
 # import user defined exception
 from tvpexept import *
 
-class TVPBase(IndexOpsMixin, NDFrame):
+
+class TVPBase(NDFrame):
     """Time-value pair base class
     
     TVPSeries and TVPDataFrame are derived from TVPBase.
@@ -24,10 +25,10 @@ class TVPBase(IndexOpsMixin, NDFrame):
     def __new__(cls, *args, **kwargs):
 
         # dictionary of all init parameters
-        user_dict = cls._buildargdict(args, kwargs)
+        user_args = cls._buildargdict(args, kwargs)
 
         # retrieve index
-        index = user_dict['index']
+        index = user_args['index']
 
         # check for datetime index
         if not isinstance(index, pd.DatetimeIndex):
@@ -41,21 +42,11 @@ class TVPBase(IndexOpsMixin, NDFrame):
         if index.inferred_freq is None:
             raise NotFixedFrequencyIndex
 
-        return object.__new__(cls, *args, **kwargs)
-
+        return NDFrame.__new__(cls, *args, **kwargs)
 
     @classmethod
     def _buildargdict(cls, args, kwargs):
         """Merge args and kwargs into a kwarg dictionary
-        
-        Parameters
-        ----------
-        args
-        kwargs
-
-        Returns
-        -------
-
         """
 
         # get init method arguments
@@ -83,6 +74,7 @@ class TVPBase(IndexOpsMixin, NDFrame):
 
         return user_dict
 
+
 class TVPSeries(TVPBase, pd.Series):
     """Time-value paired pandas Series
     
@@ -90,14 +82,6 @@ class TVPSeries(TVPBase, pd.Series):
     increasing pd.DatetimeIndex with fixed frequency.
     
     """
-
-    def __new__(cls, *args, **kwargs):
-        user_dict = cls._buildargdict(args, kwargs)
-        data = np.array(user_dict['data'])
-        if not np.issubdtype(data.dtype, np.number):
-            raise TypeError('{} values are not numeric'.format(cls.__name__))
-
-        return super(TVPSeries, cls).__new__(cls, *args, **kwargs)
 
     @property
     def _constructor(self):
@@ -116,15 +100,6 @@ class TVPDataFrame(TVPBase, pd.DataFrame):
     
     """
 
-    def __new__(cls, *args, **kwargs):
-        user_dict = cls._buildargdict(args, kwargs)
-        data = np.array(user_dict['data']) #necessary ?
-
-        if not data.dtypes.apply(lambda x: np.issubdtype(x, np.number)).all():
-            raise TypeError('{} values are not numeric'.format(cls.__name__))
-
-        return super(TVPDataFrame, cls).__new__(cls, *args, **kwargs)
-
     @property
     def _constructor(self):
         return TVPDataFrame
@@ -132,22 +107,3 @@ class TVPDataFrame(TVPBase, pd.DataFrame):
     @property
     def _constructor_sliced(self):
         return TVPSeries
-
-
-if __name__ == '__main__':
-    date_range = pd.date_range('2010-05-10', periods=100)
-    values = [1.]*100
-    data1 = pd.Series(data=values, index=date_range)
-    ts1 = TVPSeries(data1.values, index=data1.index)
-    print issubclass(ts1.__class__, pd.Series)
-    try:
-        print ts1
-    except TypeError:
-        print isinstance(ts1, pd.Series)
-        print isinstance(ts1, TVPSeries)
-        print isinstance(ts1, NDFrame)
-        print ts1
-
-    #ts2 = TVPSeries(data1.values, index=date_range[::-1])
-
-    #ts2 = TVPDataFrame(index=data1.index, data=
