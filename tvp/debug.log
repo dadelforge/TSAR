@@ -1,13 +1,10 @@
-DEBUG:root:<type 'numpy.ndarray'>
-DEBUG:root:<type 'numpy.ndarray'>
-DEBUG:root:<type 'numpy.ndarray'>
-DEBUG:root:<type 'numpy.ndarray'>
-DEBUG:root:<type 'numpy.ndarray'>
-DEBUG:root:<type 'numpy.ndarray'>
-DEBUG:root:<type 'numpy.ndarray'>
-DEBUG:root:<type 'numpy.ndarray'>
-DEBUG:root:<type 'numpy.ndarray'>
-DEBUG:root:<type 'numpy.ndarray'>
-DEBUG:root:<type 'numpy.ndarray'>
-DEBUG:root:<type 'numpy.ndarray'>
-DEBUG:root:<type 'numpy.ndarray'>
+DEBUG:root:[[ 0.  0.]
+ [ 0.  0.]
+ [ 0.  0.]
+ [ 0.  0.]
+ [ 0.  0.]]
+DEBUG:root:[[ 0.  0.]
+ [ 0.  0.]
+ [ 0.  0.]
+ [ 0.  0.]
+ [ 0.  0.]]

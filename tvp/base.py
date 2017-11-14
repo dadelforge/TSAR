@@ -1,18 +1,21 @@
 """Python model to handle univariate and mutivariate time series object with pandas
 
 The purposes of the time series library is to ensure that time series index is consistent.
-And that the variable is numeric
 
 """
 
+# TODO: modifying index should throw an error
+# TODO: adding a non numeric column to TVPDataframe should throw an error
+
 import inspect
-import logging
+import logging  # TODO: remove it after dev
 
 import numpy as np
 import pandas as pd
 from pandas.core.generic import NDFrame
 from pandas.core.internals import SingleBlockManager
 
+# TODO: remove it after dev
 logging.basicConfig(filename='debug.log', level=logging.DEBUG)
 
 
@@ -36,6 +39,22 @@ class TVPBase(NDFrame):
     """Time-value pair base class
     
     TVPSeries and TVPDataFrame are derived from TVPBase.
+    
+    TVPBase checked for DataTimeIndex consitency before the 
+    object is instantiated.
+    
+    
+    Raises
+    ------
+    TypeError
+        If index is not type `pandas.DatetimeIndex`
+    
+    NotMonotonicIncreasingError
+        If index is not monotonic increasing
+        
+    NotFixedFrequencyError
+        If index has no fixed frequency 
+        
     """
 
     def __new__(cls, *args, **kwargs):
@@ -58,7 +77,7 @@ class TVPBase(NDFrame):
         if index.inferred_freq is None:
             raise NotFixedFrequencyError('Index has no fixed frequency')
 
-        return NDFrame.__new__(cls, args, kwargs)
+        return NDFrame.__new__(cls)
 
     @classmethod
     def _buildargdict(cls, args, kwargs):
@@ -101,7 +120,7 @@ class TVPSeries(TVPBase, pd.Series):
     This class constraints pandas series to have a monotonic 
     increasing pd.DatetimeIndex with fixed frequency.
     
-    TVPSeries are instantiated as a pandas.Series
+    TVPSeries are instantiated using pandas.Series arguments.
         
     Examples
     --------
@@ -115,7 +134,6 @@ class TVPSeries(TVPBase, pd.Series):
     Using a integer type index:
     
     >>> int_range = range(10)
-    >>> values =  range(10)
     >>> ts = TVPSeries(data=values, index=int_range)
     Traceback (most recent call last):
         ...
@@ -125,7 +143,6 @@ class TVPSeries(TVPBase, pd.Series):
     
     >>> date_range = pd.date_range(start='2010-06-15', periods=10)
     >>> inv_date_range = date_range[::-1]
-    >>> values = range(10)
     >>> ts = TVPSeries(data=values, index=inv_date_range)
     Traceback (most recent call last):
         ...
@@ -141,17 +158,17 @@ class TVPSeries(TVPBase, pd.Series):
         ...
     NotFixedFrequencyError: Index has no fixed frequency
     
+    Expanding dimension:
+    
+    >>> tdf = ts.to_frame()
+    >>> print type(tdf)
+    <class '__main__.TVPDataFrame'>
+    
     Raises
     ------
-    
     TypeError
-        If index is not type `pandas.DatetimeIndex`
-    
-    NotMonotonicIncreasingError
-        If index is not monotonic increasing
-        
-    NotFixedFrequencyError
-        If index has no fixed frequency    
+        If values are not numeric
+         
     """
 
     def __init__(self, data=None, index=None, dtype=None, name=None, copy=False, fastpath=False):
@@ -165,7 +182,6 @@ class TVPSeries(TVPBase, pd.Series):
         data = np.array(data)
 
         if not np.issubdtype(data.dtype, np.number):
-            logging.debug(type(data))
             raise TypeError('Values are not numeric')
         super(TVPSeries, self).__init__(data, index, dtype, name, copy, fastpath)
 
@@ -174,8 +190,23 @@ class TVPSeries(TVPBase, pd.Series):
         return TVPSeries
 
     @property
-    def _constructor_expanddim(self):
+    def _constructor_expanddim(self, *args, **kwargs):
         return TVPDataFrame
+
+    def to_frame(self, *args, **kwargs):
+        """
+        Convert TVPSeries to TVPDataFrame
+
+        Returns
+        -------
+        tdf : TVPDataFrame
+        """
+        kwargs['index'] = self.index
+        kwargs['data'] = self.values
+
+        tdf = self._constructor_expanddim(*args, **kwargs)
+
+        return tdf
 
 
 class TVPDataFrame(TVPBase, pd.DataFrame):
@@ -184,10 +215,14 @@ class TVPDataFrame(TVPBase, pd.DataFrame):
     This class constraints pandas DataFrame to have a monotonic 
     increasing pd.DatetimeIndex with fixed frequency.
     
+    TVPDataFrame are instantiated using pandas.DataFrame arguments.
+    
     When sliced, a TVPDataFrame return a TVPSeries.
     
     Examples:
     ---------
+    
+    A valid example:
     
     >>> date_range = pd.date_range(start='2010-05-05', periods=5)
     >>> values = np.zeros(shape=(5,2))
@@ -201,16 +236,32 @@ class TVPDataFrame(TVPBase, pd.DataFrame):
     2010-05-08   0.0   0.0
     2010-05-09   0.0   0.0
     
+    Slicing example:
+    
+    >>> print type(tdf['col1'])
+    <class '__main__.TVPSeries'>
+    
+    Raises
+    ------
+    TypeError
+        If values are not numeric
+    
     """
 
     def __init__(self, data=None, index=None, columns=None, dtype=None, copy=False):
+
+        # checking if data is SingleBlockManager
+        if isinstance(data, SingleBlockManager):
+            data = data.get_values()
+
         data = np.array(data)
+
         if not np.issubdtype(data.dtype, np.number):
             raise TypeError('Values are not numeric')
         super(TVPDataFrame, self).__init__(data, index, columns, dtype, copy)
 
     @property
-    def _constructor(self):
+    def _constructor(self, data=None, index=None):
         return TVPDataFrame
 
     @property
