@@ -5,7 +5,9 @@ The purposes of the time series library is to ensure that time series index is c
 """
 
 # TODO: modifying index should throw an error
+# HOWTO: use a decorator on pandas.Series._set_axis to test label?
 # TODO: adding a non numeric column to TVPDataframe should throw an error
+# TODO:
 
 import inspect
 import logging  # TODO: remove it after dev
@@ -64,6 +66,18 @@ class TVPBase(NDFrame):
 
         # retrieve index
         index = user_args['index']
+
+        # retrieve data
+        data = user_args['data']
+
+        # Do not support dictionary
+        if isinstance(data, dict):
+            raise NotImplementedError('dict type not supported')
+
+
+        # retrieve index from data if data is a NDFrame
+        if index is None and isinstance(data, NDFrame):
+            index = data.index
 
         # check for datetime index
         if not isinstance(index, pd.DatetimeIndex):
@@ -173,9 +187,14 @@ class TVPSeries(TVPBase, pd.Series):
 
     def __init__(self, data=None, index=None, dtype=None, name=None, copy=False, fastpath=False):
 
-        # checking if data is a list
+        # checking if data is a series
+
+        if isinstance(data, pd.Series) and index is None:
+            index = data.index
+            data = data.values
 
         # checking if data is SingleBlockManager
+
         if isinstance(data, SingleBlockManager):
             data = data.get_values()
 
