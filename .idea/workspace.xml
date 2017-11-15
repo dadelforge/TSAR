@@ -7,7 +7,7 @@
   <component name="ChangeListManager">
     <list default="true" id="93df2b19-42da-42f4-a540-c77b47065b48" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/test_tvp.py" afterPath="$PROJECT_DIR$/test/test_tvp.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/debug.log" afterPath="$PROJECT_DIR$/test/debug.log" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tvp/base.py" afterPath="$PROJECT_DIR$/tvp/base.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tvp/debug.log" afterPath="$PROJECT_DIR$/tvp/debug.log" />
     </list>
@@ -22,9 +22,9 @@
     <SUITE FILE_PATH="coverage/pynltsa$timeseries.coverage" NAME="timeseries Coverage Results" MODIFIED="1510565201864" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/timeseries" />
     <SUITE FILE_PATH="coverage/pynltsa$tvp.coverage" NAME="tvp Coverage Results" MODIFIED="1510670345813" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tvp" />
     <SUITE FILE_PATH="coverage/pynltsa$correlation.coverage" NAME="correlation Coverage Results" MODIFIED="1510742217641" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/correlation" />
-    <SUITE FILE_PATH="coverage/pynltsa$base.coverage" NAME="base Coverage Results" MODIFIED="1510756950500" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tvp" />
+    <SUITE FILE_PATH="coverage/pynltsa$base.coverage" NAME="base Coverage Results" MODIFIED="1510761841268" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tvp" />
     <SUITE FILE_PATH="coverage/pynltsa$test_timeseries.coverage" NAME="test_timeseries Coverage Results" MODIFIED="1510748841892" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test" />
-    <SUITE FILE_PATH="coverage/pynltsa$test_tvp.coverage" NAME="test_tvp Coverage Results" MODIFIED="1510757683678" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test" />
+    <SUITE FILE_PATH="coverage/pynltsa$test_tvp.coverage" NAME="test_tvp Coverage Results" MODIFIED="1510761846861" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test" />
   </component>
   <component name="DatabaseView">
     <option name="SHOW_INTERMEDIATE" value="true" />
@@ -41,36 +41,37 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="base.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="base.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/tvp/base.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-904">
-              <caret line="193" column="30" lean-forward="false" selection-start-line="193" selection-start-column="30" selection-end-line="193" selection-end-column="30" />
+            <state relative-caret-position="128">
+              <caret line="73" column="49" lean-forward="false" selection-start-line="73" selection-start-column="49" selection-end-line="73" selection-end-column="49" />
               <folding>
-                <element signature="e#378#392#0" expanded="true" />
-                <marker date="1510756944530" expanded="true" signature="662:997" ph="import ..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="test_tvp.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/test/test_tvp.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="280">
-              <caret line="119" column="12" lean-forward="false" selection-start-line="119" selection-start-column="12" selection-end-line="119" selection-end-column="12" />
-              <folding>
-                <element signature="e#650#659#0" expanded="true" />
+                <element signature="e#259#273#0" expanded="true" />
+                <marker date="1510761974529" expanded="true" signature="543:878" ph="import ..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file leaf-file-name="debug.log" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/test/debug.log">
+        <entry file="file://$PROJECT_DIR$/tvp/debug.log">
           <provider selected="true" editor-type-id="LogFileEditorProvider">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            <state relative-caret-position="112">
+              <caret line="179" column="13" lean-forward="false" selection-start-line="179" selection-start-column="13" selection-end-line="179" selection-end-column="13" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="test_tvp.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/test/test_tvp.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="2261">
+              <caret line="119" column="12" lean-forward="false" selection-start-line="119" selection-start-column="12" selection-end-line="119" selection-end-column="12" />
+              <folding>
+                <element signature="e#650#659#0" expanded="true" />
+                <marker date="1510757908013" expanded="true" signature="952:4024" ph="..." />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -83,6 +84,11 @@
         <option value="Python Script" />
       </list>
     </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>logging</find>
+    </findStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -99,8 +105,8 @@
         <option value="$PROJECT_DIR$/tvp/tvp.py" />
         <option value="$PROJECT_DIR$/tvp/debug.log" />
         <option value="$PROJECT_DIR$/correlation/correlation.py" />
-        <option value="$PROJECT_DIR$/tvp/base.py" />
         <option value="$PROJECT_DIR$/test/test_tvp.py" />
+        <option value="$PROJECT_DIR$/tvp/base.py" />
       </list>
     </option>
   </component>
@@ -524,10 +530,10 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32941177" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.4103115" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.4226638" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24060151" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Inspection Results" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.37529412" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24758324" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Inspection Results" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.4282353" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32941177" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.19656284" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -551,12 +557,12 @@
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32941177" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.39795917" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.4103115" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Coverage" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23361976" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24060151" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="3" side_tool="false" content_ui="combo" />
-      <window_info id="Inspection Results" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32941177" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection Results" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.37529412" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32941177" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.19656284" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -582,8 +588,8 @@
         <state relative-caret-position="399">
           <caret line="21" column="25" lean-forward="true" selection-start-line="21" selection-start-column="25" selection-end-line="21" selection-end-column="25" />
           <folding>
-            <element signature="e#378#392#0" expanded="true" />
-            <marker date="1510756944530" expanded="true" signature="662:997" ph="import ..." />
+            <element signature="e#259#273#0" expanded="true" />
+            <marker date="1510761974529" expanded="true" signature="543:878" ph="import ..." />
           </folding>
         </state>
       </provider>
@@ -600,8 +606,8 @@
         <state relative-caret-position="1919">
           <caret line="101" column="13" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="145" selection-end-column="32" />
           <folding>
-            <element signature="e#378#392#0" expanded="true" />
-            <marker date="1510756944530" expanded="true" signature="662:997" ph="import ..." />
+            <element signature="e#259#273#0" expanded="true" />
+            <marker date="1510761974529" expanded="true" signature="543:878" ph="import ..." />
           </folding>
         </state>
       </provider>
@@ -611,8 +617,8 @@
         <state relative-caret-position="722">
           <caret line="38" column="45" lean-forward="false" selection-start-line="38" selection-start-column="45" selection-end-line="38" selection-end-column="45" />
           <folding>
-            <element signature="e#378#392#0" expanded="true" />
-            <marker date="1510756944530" expanded="true" signature="662:997" ph="import ..." />
+            <element signature="e#259#273#0" expanded="true" />
+            <marker date="1510761974529" expanded="true" signature="543:878" ph="import ..." />
           </folding>
         </state>
       </provider>
@@ -622,8 +628,8 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#378#392#0" expanded="true" />
-            <marker date="1510756944530" expanded="true" signature="662:997" ph="import ..." />
+            <element signature="e#259#273#0" expanded="true" />
+            <marker date="1510761974529" expanded="true" signature="543:878" ph="import ..." />
           </folding>
         </state>
       </provider>
@@ -633,8 +639,8 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#378#392#0" expanded="true" />
-            <marker date="1510756944530" expanded="true" signature="662:997" ph="import ..." />
+            <element signature="e#259#273#0" expanded="true" />
+            <marker date="1510761974529" expanded="true" signature="543:878" ph="import ..." />
           </folding>
         </state>
       </provider>
@@ -651,8 +657,8 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#378#392#0" expanded="true" />
-            <marker date="1510756944530" expanded="true" signature="662:997" ph="import ..." />
+            <element signature="e#259#273#0" expanded="true" />
+            <marker date="1510761974529" expanded="true" signature="543:878" ph="import ..." />
           </folding>
         </state>
       </provider>
@@ -750,30 +756,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/AppData/Local/Enthought/Canopy/App/appdata/canopy-1.7.4.3348.win-x86_64/Lib/doctest.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="124">
-          <caret line="1314" column="0" lean-forward="false" selection-start-line="1314" selection-start-column="0" selection-end-line="1314" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/tvp/tvpexept.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="9" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tvp/debug.log">
-      <provider selected="true" editor-type-id="LogFileEditorProvider">
-        <state relative-caret-position="285">
-          <caret line="15" column="22" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="170" selection-end-column="0" />
-        </state>
-      </provider>
-      <provider editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -803,23 +789,45 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tvp/base.py">
+    <entry file="file://$USER_HOME$/AppData/Local/Enthought/Canopy/App/appdata/canopy-1.7.4.3348.win-x86_64/Lib/doctest.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-904">
-          <caret line="193" column="30" lean-forward="false" selection-start-line="193" selection-start-column="30" selection-end-line="193" selection-end-column="30" />
-          <folding>
-            <element signature="e#378#392#0" expanded="true" />
-            <marker date="1510756944530" expanded="true" signature="662:997" ph="import ..." />
-          </folding>
+        <state relative-caret-position="151">
+          <caret line="1314" column="0" lean-forward="false" selection-start-line="1314" selection-start-column="0" selection-end-line="1314" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tvp/debug.log">
+      <provider selected="true" editor-type-id="LogFileEditorProvider">
+        <state relative-caret-position="112">
+          <caret line="179" column="13" lean-forward="false" selection-start-line="179" selection-start-column="13" selection-end-line="179" selection-end-column="13" />
+        </state>
+      </provider>
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/test/test_tvp.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="280">
+        <state relative-caret-position="2261">
           <caret line="119" column="12" lean-forward="false" selection-start-line="119" selection-start-column="12" selection-end-line="119" selection-end-column="12" />
           <folding>
             <element signature="e#650#659#0" expanded="true" />
+            <marker date="1510757908013" expanded="true" signature="952:4024" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tvp/base.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="128">
+          <caret line="73" column="49" lean-forward="false" selection-start-line="73" selection-start-column="49" selection-end-line="73" selection-end-column="49" />
+          <folding>
+            <element signature="e#259#273#0" expanded="true" />
+            <marker date="1510761974529" expanded="true" signature="543:878" ph="import ..." />
           </folding>
         </state>
       </provider>

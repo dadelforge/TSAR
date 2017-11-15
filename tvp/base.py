@@ -1,13 +1,11 @@
-"""Python model to handle univariate and mutivariate time series object with pandas
+"""Python model to handle univariate and multivariate time series object with pandas
 
 The purposes of the time series library is to ensure that time series index is consistent.
 
 """
 
-# TODO: modifying index should throw an error
-# HOWTO: use a decorator on pandas.Series._set_axis to test label?
 # TODO: adding a non numeric column to TVPDataframe should throw an error
-# TODO:
+
 
 import inspect
 import logging  # TODO: remove it after dev
@@ -37,12 +35,43 @@ class NotFixedFrequencyError(TVPError):
     pass
 
 
+# User defined decorators
+
+def _validate_index(index):
+    """Raise errors if index is not valid
+    
+    # TODO: should return bool and raise warning instead
+    # This would be more flexible
+    
+    Parameters
+    ----------
+    index
+        index like object
+
+    Returns
+    -------
+        bool
+    """
+
+    # check for datetime index
+    if not isinstance(index, pd.DatetimeIndex):
+        raise TypeError('Index is not type {}'.format(pd.DatetimeIndex.__name__))
+
+    # check if datetime index is monotonic increasing
+    if not index.is_monotonic_increasing:
+        raise NotMonotonicIncreasingError('Index in not monotonic increasing')
+
+    # check if datetime index has fixed frequency
+    if index.inferred_freq is None:
+        raise NotFixedFrequencyError('Index has no fixed frequency')
+
+
 class TVPBase(NDFrame):
     """Time-value pair base class
     
     TVPSeries and TVPDataFrame are derived from TVPBase.
     
-    TVPBase checked for DataTimeIndex consitency before the 
+    TVPBase checked for DataTimeIndex consistency before the 
     object is instantiated.
     
     
@@ -62,7 +91,7 @@ class TVPBase(NDFrame):
     def __new__(cls, *args, **kwargs):
 
         # dictionary of all init parameters
-        user_args = cls._buildargdict(args, kwargs)
+        user_args = cls._buildargdict('__init__', args, kwargs)
 
         # retrieve index
         index = user_args['index']
@@ -74,32 +103,21 @@ class TVPBase(NDFrame):
         if isinstance(data, dict):
             raise NotImplementedError('dict type not supported')
 
-
         # retrieve index from data if data is a NDFrame
         if index is None and isinstance(data, NDFrame):
             index = data.index
 
-        # check for datetime index
-        if not isinstance(index, pd.DatetimeIndex):
-            raise TypeError('Index is not type {}'.format(pd.DatetimeIndex.__name__))
-
-        # check if datetime index is monotonic increasing
-        if not index.is_monotonic_increasing:
-            raise NotMonotonicIncreasingError('Index in not monotonic increasing')
-
-        # check if datetime index has fixed frequency
-        if index.inferred_freq is None:
-            raise NotFixedFrequencyError('Index has no fixed frequency')
+        _validate_index(index)
 
         return NDFrame.__new__(cls)
 
     @classmethod
-    def _buildargdict(cls, args, kwargs):
+    def _buildargdict(cls, method, args, kwargs):
         """Merge args and kwargs into a kwarg dictionary
         """
 
         # get init method arguments
-        argspec = inspect.getargspec(cls.__init__)
+        argspec = inspect.getargspec(eval('cls.{}'.format(method)))
 
         # arguments names
         argnames = argspec[0][1:]
@@ -227,6 +245,10 @@ class TVPSeries(TVPBase, pd.Series):
 
         return tdf
 
+    def _set_axis(self, axis, labels, *args, **kwargs):
+        _validate_index(labels)
+        super(TVPSeries, self)._set_axis(axis, labels, *args, **kwargs)
+
 
 class TVPDataFrame(TVPBase, pd.DataFrame):
     """Time-values paired pandas DataFrame
@@ -260,6 +282,13 @@ class TVPDataFrame(TVPBase, pd.DataFrame):
     >>> print type(tdf['col1'])
     <class '__main__.TVPSeries'>
     
+    Adding columns:
+    
+    >>> tdf['new'] = ['hi']*len(tdf)
+    Traceback (most recent call last):
+        ...
+    TypeError: Values are not numeric
+    
     Raises
     ------
     TypeError
@@ -286,6 +315,20 @@ class TVPDataFrame(TVPBase, pd.DataFrame):
     @property
     def _constructor_sliced(self):
         return TVPSeries
+
+    def _set_axis(self, axis, labels, *args, **kwargs):
+        """ Check index before any axis setting
+        """
+        _validate_index(labels)
+        super(TVPDataFrame, self)._set_axis(axis, labels)
+
+    def _sanitize_column(self, key, value, broadcast=True):
+        """ Check column values before assignment
+        """
+        value = np.array(value)
+        if not np.issubdtype(value.dtype, np.number):
+            raise TypeError('Values are not numeric')
+        return super(TVPDataFrame, self)._sanitize_column(key, value, broadcast=True)
 
 
 if __name__ == '__main__':
