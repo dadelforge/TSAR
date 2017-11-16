@@ -16,7 +16,7 @@ Current implemented test:
 
 import pandas as pd
 import unittest
-from tsar.datamodel import TVPSeries, TVPDataFrame
+from tsar.dtypes import TVPSeries, TVPDataFrame
 from tsar.errors import NotMonotonicIncreasingError
 from tsar.errors import NotFixedFrequencyError
 

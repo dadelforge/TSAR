@@ -51,8 +51,8 @@ import pandas as pd
 from pandas.core.generic import NDFrame
 from pandas.core.internals import SingleBlockManager
 
-from errors import NotFixedFrequencyError
-from errors import NotMonotonicIncreasingError
+from tsar.errors import NotFixedFrequencyError
+from tsar.errors import NotMonotonicIncreasingError
 
 # TODO: remove it after dev
 logging.basicConfig(filename='debug.log', level=logging.DEBUG)
