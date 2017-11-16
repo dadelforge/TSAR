@@ -6,21 +6,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="93df2b19-42da-42f4-a540-c77b47065b48" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tsar/datamodel_2.py" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/correlation/correlation.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/test/debug.log" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/tvp/debug.log" afterPath="" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/.idea/pynltsa.iml" afterPath="$PROJECT_DIR$/.idea/tsar-dev.iml" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/__init__.py" afterPath="$PROJECT_DIR$/tsar/__init__.py" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/test/__init__.py" afterPath="$PROJECT_DIR$/tsar/data.py" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/test/test_tvp.py" afterPath="$PROJECT_DIR$/tsar/test/test_datamodel.py" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/tvp/__init__.py" afterPath="$PROJECT_DIR$/tsar/test/__init__.py" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/tvp/base.py" afterPath="$PROJECT_DIR$/tsar/datamodel.py" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/tvp/readme.md" afterPath="$PROJECT_DIR$/tsar/readme.md" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/tvp/tvpexept.py" afterPath="$PROJECT_DIR$/tsar/errors.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tsar/__init__.py" afterPath="$PROJECT_DIR$/tsar/__init__.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tsar/correlate.py" afterPath="$PROJECT_DIR$/tsar/correlate.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tsar/data.py" afterPath="$PROJECT_DIR$/tsar/data.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tsar/datamodel.py" afterPath="$PROJECT_DIR$/tsar/datamodel.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -31,8 +20,9 @@
   </component>
   <component name="CoverageDataManager">
     <SUITE FILE_PATH="coverage/pynltsa$timeseries.coverage" NAME="timeseries Coverage Results" MODIFIED="1510565201864" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/timeseries" />
-    <SUITE FILE_PATH="coverage/tsar_dev$datamodel.coverage" NAME="datamodel Coverage Results" MODIFIED="1510784510463" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tsar" />
-    <SUITE FILE_PATH="coverage/tsar_dev$correlate.coverage" NAME="correlate Coverage Results" MODIFIED="1510771123845" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tsar" />
+    <SUITE FILE_PATH="coverage/tsar_dev$datamodel.coverage" NAME="datamodel Coverage Results" MODIFIED="1510838487879" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tsar" />
+    <SUITE FILE_PATH="coverage/tsar_dev$data.coverage" NAME="data Coverage Results" MODIFIED="1510830239491" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tsar" />
+    <SUITE FILE_PATH="coverage/tsar_dev$correlate.coverage" NAME="correlate Coverage Results" MODIFIED="1510833685486" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tsar" />
     <SUITE FILE_PATH="coverage/pynltsa$tvp.coverage" NAME="tvp Coverage Results" MODIFIED="1510670345813" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tvp" />
     <SUITE FILE_PATH="coverage/pynltsa$correlation.coverage" NAME="correlation Coverage Results" MODIFIED="1510742217641" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/correlation" />
     <SUITE FILE_PATH="coverage/pynltsa$base.coverage" NAME="base Coverage Results" MODIFIED="1510761841268" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tvp" />
@@ -55,12 +45,48 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="datamodel_2.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/tsar/datamodel_2.py">
+      <file leaf-file-name="datamodel.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/tsar/datamodel.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="489">
+              <caret line="31" column="4" lean-forward="true" selection-start-line="31" selection-start-column="4" selection-end-line="31" selection-end-column="4" />
+              <folding>
+                <element signature="e#68#86#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="__init__.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/tsar/__init__.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <caret line="0" column="0" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="correlate.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/tsar/correlate.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="261">
+              <caret line="26" column="4" lean-forward="true" selection-start-line="26" selection-start-column="4" selection-end-line="26" selection-end-column="4" />
+              <folding>
+                <element signature="e#98#116#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="data.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/tsar/data.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="418">
+              <caret line="50" column="22" lean-forward="true" selection-start-line="50" selection-start-column="22" selection-end-line="50" selection-end-column="22" />
+              <folding>
+                <element signature="e#15#33#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -117,9 +143,10 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-8" />
-    <option name="width" value="976" />
-    <option name="height" value="1038" />
+    <option name="x" value="-9" />
+    <option name="y" value="-9" />
+    <option name="width" value="1938" />
+    <option name="height" value="1048" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -141,6 +168,20 @@
       <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="tsar-dev" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="External Libraries" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="&lt; Python 2.7.11 virtualenv at C:\Users\dadelforge\AppData\Local\Enthought\Canopy &gt;" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
+            </PATH_ELEMENT>
+          </PATH>
           <PATH>
             <PATH_ELEMENT>
               <option name="myItemId" value="tsar-dev" />
@@ -217,25 +258,6 @@
     </option>
   </component>
   <component name="RunManager" selected="Python.datamodel">
-    <configuration default="false" name="base" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tvp" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="pynltsa" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="C:\Users\dadelforge\Google Drive\MIGRADAKH\07_labo_numerique\modules\pynltsa\tsar\datamodel.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <method />
-    </configuration>
     <configuration default="false" name="test_tvp" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -307,6 +329,25 @@
       <module name="tsar-dev" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/tsar/correlate.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="data" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tsar" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="tsar-dev" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/tsar/data.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -498,19 +539,19 @@
     </configuration>
     <list size="6">
       <item index="0" class="java.lang.String" itemvalue="Python.tvp" />
-      <item index="1" class="java.lang.String" itemvalue="Python.base" />
-      <item index="2" class="java.lang.String" itemvalue="Python.test_tvp" />
-      <item index="3" class="java.lang.String" itemvalue="Python.datamodel" />
-      <item index="4" class="java.lang.String" itemvalue="Python.test_datamodel" />
-      <item index="5" class="java.lang.String" itemvalue="Python.correlate" />
+      <item index="1" class="java.lang.String" itemvalue="Python.test_tvp" />
+      <item index="2" class="java.lang.String" itemvalue="Python.datamodel" />
+      <item index="3" class="java.lang.String" itemvalue="Python.test_datamodel" />
+      <item index="4" class="java.lang.String" itemvalue="Python.correlate" />
+      <item index="5" class="java.lang.String" itemvalue="Python.data" />
     </list>
     <recent_temporary>
       <list size="5">
         <item index="0" class="java.lang.String" itemvalue="Python.datamodel" />
         <item index="1" class="java.lang.String" itemvalue="Python.correlate" />
-        <item index="2" class="java.lang.String" itemvalue="Python.test_datamodel" />
-        <item index="3" class="java.lang.String" itemvalue="Python.test_tvp" />
-        <item index="4" class="java.lang.String" itemvalue="Python.base" />
+        <item index="2" class="java.lang.String" itemvalue="Python.data" />
+        <item index="3" class="java.lang.String" itemvalue="Python.test_datamodel" />
+        <item index="4" class="java.lang.String" itemvalue="Python.test_tvp" />
       </list>
     </recent_temporary>
   </component>
@@ -537,18 +578,17 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="0" width="976" height="1038" extended-state="0" />
-    <editor active="true" />
+    <frame x="-9" y="-9" width="1938" height="1048" extended-state="6" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32941177" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.66805845" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32941177" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.29377013" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.14930183" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Inspection Results" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4282353" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20139635" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Inspection Results" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.48352942" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32941177" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.19656284" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -603,49 +643,7 @@
         <state relative-caret-position="399">
           <caret line="21" column="25" lean-forward="true" selection-start-line="21" selection-start-column="25" selection-end-line="21" selection-end-column="25" />
           <folding>
-            <marker date="1510784569190" expanded="true" signature="0:1382" ph="&quot;&quot;&quot;Python data models to handle and constraint various type of time series...&quot;&quot;&quot;" />
-            <marker date="1510784569190" expanded="true" signature="1384:1665" ph="import ..." />
-            <marker date="1510784569190" expanded="true" signature="1814:2563" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="1819:2069" ph="&quot;&quot;&quot;Raise errors if index is not valid...&quot;&quot;&quot;" />
-            <marker date="1510784569190" expanded="true" signature="2589:5365" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="2594:3054" ph="&quot;&quot;&quot;Time-value pair base class...&quot;&quot;&quot;" />
-            <marker date="1510784569190" expanded="true" signature="3113:3894" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="3962:4721" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="4777:5289" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="4911:5063" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="5105:5263" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="5342:5365" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="5404:10278" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="5409:7024" ph="&quot;&quot;&quot;Time-value paired pandas Series...&quot;&quot;&quot;" />
-            <marker date="1510784569190" expanded="true" signature="7142:7865" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="7142:7927" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="7191:7333" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="7433:7495" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="7970:7995" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="8065:8093" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="8138:8187" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="8227:8266" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="8309:8365" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="8406:8489" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="8536:9789" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="8545:8765" ph="&quot;&quot;&quot;...&quot;&quot;&quot;" />
-            <marker date="1510784569190" expanded="true" signature="8792:8903" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="8938:9161" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="8995:9160" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="9204:9662" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="9338:9487" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="9506:9662" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="9833:10113" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="9842:9959" ph="&quot;&quot;&quot;Convert TVPSeries to TVPDataFrame...&quot;&quot;&quot;" />
-            <marker date="1510784569190" expanded="true" signature="10170:10278" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="10323:12685" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="10328:11415" ph="&quot;&quot;&quot;Time-values paired pandas DataFrame...&quot;&quot;&quot;" />
-            <marker date="1510784569190" expanded="true" signature="11520:11921" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="11987:12015" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="12065:12090" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="12147:12336" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="12397:12685" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="12714:12756" ph="..." />
+            <element signature="e#68#86#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -662,49 +660,7 @@
         <state relative-caret-position="1919">
           <caret line="101" column="13" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="145" selection-end-column="32" />
           <folding>
-            <marker date="1510784569190" expanded="true" signature="0:1382" ph="&quot;&quot;&quot;Python data models to handle and constraint various type of time series...&quot;&quot;&quot;" />
-            <marker date="1510784569190" expanded="true" signature="1384:1665" ph="import ..." />
-            <marker date="1510784569190" expanded="true" signature="1814:2563" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="1819:2069" ph="&quot;&quot;&quot;Raise errors if index is not valid...&quot;&quot;&quot;" />
-            <marker date="1510784569190" expanded="true" signature="2589:5365" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="2594:3054" ph="&quot;&quot;&quot;Time-value pair base class...&quot;&quot;&quot;" />
-            <marker date="1510784569190" expanded="true" signature="3113:3894" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="3962:4721" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="4777:5289" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="4911:5063" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="5105:5263" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="5342:5365" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="5404:10278" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="5409:7024" ph="&quot;&quot;&quot;Time-value paired pandas Series...&quot;&quot;&quot;" />
-            <marker date="1510784569190" expanded="true" signature="7142:7865" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="7142:7927" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="7191:7333" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="7433:7495" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="7970:7995" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="8065:8093" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="8138:8187" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="8227:8266" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="8309:8365" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="8406:8489" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="8536:9789" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="8545:8765" ph="&quot;&quot;&quot;...&quot;&quot;&quot;" />
-            <marker date="1510784569190" expanded="true" signature="8792:8903" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="8938:9161" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="8995:9160" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="9204:9662" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="9338:9487" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="9506:9662" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="9833:10113" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="9842:9959" ph="&quot;&quot;&quot;Convert TVPSeries to TVPDataFrame...&quot;&quot;&quot;" />
-            <marker date="1510784569190" expanded="true" signature="10170:10278" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="10323:12685" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="10328:11415" ph="&quot;&quot;&quot;Time-values paired pandas DataFrame...&quot;&quot;&quot;" />
-            <marker date="1510784569190" expanded="true" signature="11520:11921" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="11987:12015" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="12065:12090" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="12147:12336" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="12397:12685" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="12714:12756" ph="..." />
+            <element signature="e#68#86#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -714,49 +670,7 @@
         <state relative-caret-position="722">
           <caret line="38" column="45" lean-forward="false" selection-start-line="38" selection-start-column="45" selection-end-line="38" selection-end-column="45" />
           <folding>
-            <marker date="1510784569190" expanded="true" signature="0:1382" ph="&quot;&quot;&quot;Python data models to handle and constraint various type of time series...&quot;&quot;&quot;" />
-            <marker date="1510784569190" expanded="true" signature="1384:1665" ph="import ..." />
-            <marker date="1510784569190" expanded="true" signature="1814:2563" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="1819:2069" ph="&quot;&quot;&quot;Raise errors if index is not valid...&quot;&quot;&quot;" />
-            <marker date="1510784569190" expanded="true" signature="2589:5365" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="2594:3054" ph="&quot;&quot;&quot;Time-value pair base class...&quot;&quot;&quot;" />
-            <marker date="1510784569190" expanded="true" signature="3113:3894" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="3962:4721" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="4777:5289" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="4911:5063" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="5105:5263" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="5342:5365" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="5404:10278" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="5409:7024" ph="&quot;&quot;&quot;Time-value paired pandas Series...&quot;&quot;&quot;" />
-            <marker date="1510784569190" expanded="true" signature="7142:7865" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="7142:7927" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="7191:7333" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="7433:7495" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="7970:7995" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="8065:8093" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="8138:8187" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="8227:8266" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="8309:8365" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="8406:8489" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="8536:9789" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="8545:8765" ph="&quot;&quot;&quot;...&quot;&quot;&quot;" />
-            <marker date="1510784569190" expanded="true" signature="8792:8903" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="8938:9161" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="8995:9160" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="9204:9662" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="9338:9487" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="9506:9662" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="9833:10113" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="9842:9959" ph="&quot;&quot;&quot;Convert TVPSeries to TVPDataFrame...&quot;&quot;&quot;" />
-            <marker date="1510784569190" expanded="true" signature="10170:10278" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="10323:12685" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="10328:11415" ph="&quot;&quot;&quot;Time-values paired pandas DataFrame...&quot;&quot;&quot;" />
-            <marker date="1510784569190" expanded="true" signature="11520:11921" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="11987:12015" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="12065:12090" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="12147:12336" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="12397:12685" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="12714:12756" ph="..." />
+            <element signature="e#68#86#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -766,49 +680,7 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <marker date="1510784569190" expanded="true" signature="0:1382" ph="&quot;&quot;&quot;Python data models to handle and constraint various type of time series...&quot;&quot;&quot;" />
-            <marker date="1510784569190" expanded="true" signature="1384:1665" ph="import ..." />
-            <marker date="1510784569190" expanded="true" signature="1814:2563" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="1819:2069" ph="&quot;&quot;&quot;Raise errors if index is not valid...&quot;&quot;&quot;" />
-            <marker date="1510784569190" expanded="true" signature="2589:5365" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="2594:3054" ph="&quot;&quot;&quot;Time-value pair base class...&quot;&quot;&quot;" />
-            <marker date="1510784569190" expanded="true" signature="3113:3894" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="3962:4721" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="4777:5289" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="4911:5063" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="5105:5263" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="5342:5365" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="5404:10278" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="5409:7024" ph="&quot;&quot;&quot;Time-value paired pandas Series...&quot;&quot;&quot;" />
-            <marker date="1510784569190" expanded="true" signature="7142:7865" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="7142:7927" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="7191:7333" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="7433:7495" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="7970:7995" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="8065:8093" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="8138:8187" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="8227:8266" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="8309:8365" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="8406:8489" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="8536:9789" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="8545:8765" ph="&quot;&quot;&quot;...&quot;&quot;&quot;" />
-            <marker date="1510784569190" expanded="true" signature="8792:8903" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="8938:9161" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="8995:9160" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="9204:9662" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="9338:9487" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="9506:9662" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="9833:10113" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="9842:9959" ph="&quot;&quot;&quot;Convert TVPSeries to TVPDataFrame...&quot;&quot;&quot;" />
-            <marker date="1510784569190" expanded="true" signature="10170:10278" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="10323:12685" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="10328:11415" ph="&quot;&quot;&quot;Time-values paired pandas DataFrame...&quot;&quot;&quot;" />
-            <marker date="1510784569190" expanded="true" signature="11520:11921" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="11987:12015" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="12065:12090" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="12147:12336" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="12397:12685" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="12714:12756" ph="..." />
+            <element signature="e#68#86#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -818,49 +690,7 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <marker date="1510784569190" expanded="true" signature="0:1382" ph="&quot;&quot;&quot;Python data models to handle and constraint various type of time series...&quot;&quot;&quot;" />
-            <marker date="1510784569190" expanded="true" signature="1384:1665" ph="import ..." />
-            <marker date="1510784569190" expanded="true" signature="1814:2563" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="1819:2069" ph="&quot;&quot;&quot;Raise errors if index is not valid...&quot;&quot;&quot;" />
-            <marker date="1510784569190" expanded="true" signature="2589:5365" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="2594:3054" ph="&quot;&quot;&quot;Time-value pair base class...&quot;&quot;&quot;" />
-            <marker date="1510784569190" expanded="true" signature="3113:3894" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="3962:4721" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="4777:5289" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="4911:5063" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="5105:5263" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="5342:5365" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="5404:10278" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="5409:7024" ph="&quot;&quot;&quot;Time-value paired pandas Series...&quot;&quot;&quot;" />
-            <marker date="1510784569190" expanded="true" signature="7142:7865" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="7142:7927" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="7191:7333" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="7433:7495" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="7970:7995" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="8065:8093" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="8138:8187" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="8227:8266" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="8309:8365" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="8406:8489" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="8536:9789" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="8545:8765" ph="&quot;&quot;&quot;...&quot;&quot;&quot;" />
-            <marker date="1510784569190" expanded="true" signature="8792:8903" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="8938:9161" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="8995:9160" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="9204:9662" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="9338:9487" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="9506:9662" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="9833:10113" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="9842:9959" ph="&quot;&quot;&quot;Convert TVPSeries to TVPDataFrame...&quot;&quot;&quot;" />
-            <marker date="1510784569190" expanded="true" signature="10170:10278" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="10323:12685" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="10328:11415" ph="&quot;&quot;&quot;Time-values paired pandas DataFrame...&quot;&quot;&quot;" />
-            <marker date="1510784569190" expanded="true" signature="11520:11921" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="11987:12015" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="12065:12090" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="12147:12336" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="12397:12685" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="12714:12756" ph="..." />
+            <element signature="e#68#86#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -877,49 +707,7 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <marker date="1510784569190" expanded="true" signature="0:1382" ph="&quot;&quot;&quot;Python data models to handle and constraint various type of time series...&quot;&quot;&quot;" />
-            <marker date="1510784569190" expanded="true" signature="1384:1665" ph="import ..." />
-            <marker date="1510784569190" expanded="true" signature="1814:2563" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="1819:2069" ph="&quot;&quot;&quot;Raise errors if index is not valid...&quot;&quot;&quot;" />
-            <marker date="1510784569190" expanded="true" signature="2589:5365" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="2594:3054" ph="&quot;&quot;&quot;Time-value pair base class...&quot;&quot;&quot;" />
-            <marker date="1510784569190" expanded="true" signature="3113:3894" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="3962:4721" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="4777:5289" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="4911:5063" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="5105:5263" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="5342:5365" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="5404:10278" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="5409:7024" ph="&quot;&quot;&quot;Time-value paired pandas Series...&quot;&quot;&quot;" />
-            <marker date="1510784569190" expanded="true" signature="7142:7865" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="7142:7927" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="7191:7333" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="7433:7495" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="7970:7995" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="8065:8093" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="8138:8187" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="8227:8266" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="8309:8365" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="8406:8489" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="8536:9789" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="8545:8765" ph="&quot;&quot;&quot;...&quot;&quot;&quot;" />
-            <marker date="1510784569190" expanded="true" signature="8792:8903" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="8938:9161" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="8995:9160" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="9204:9662" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="9338:9487" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="9506:9662" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="9833:10113" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="9842:9959" ph="&quot;&quot;&quot;Convert TVPSeries to TVPDataFrame...&quot;&quot;&quot;" />
-            <marker date="1510784569190" expanded="true" signature="10170:10278" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="10323:12685" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="10328:11415" ph="&quot;&quot;&quot;Time-values paired pandas DataFrame...&quot;&quot;&quot;" />
-            <marker date="1510784569190" expanded="true" signature="11520:11921" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="11987:12015" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="12065:12090" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="12147:12336" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="12397:12685" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="12714:12756" ph="..." />
+            <element signature="e#68#86#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1086,55 +874,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tsar/errors.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="114">
-          <caret line="6" column="22" lean-forward="false" selection-start-line="6" selection-start-column="6" selection-end-line="6" selection-end-column="33" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tsar/test/test_datamodel.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="399">
-          <caret line="21" column="0" lean-forward="true" selection-start-line="21" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
-          <folding>
-            <element signature="e#649#668#0" expanded="true" />
-            <marker date="1510768779329" expanded="true" signature="889:3961" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tsar/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="19">
-          <caret line="1" column="11" lean-forward="false" selection-start-line="1" selection-start-column="11" selection-end-line="1" selection-end-column="11" />
-          <folding>
-            <element signature="e#0#45#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tsar/data.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="76">
-          <caret line="4" column="0" lean-forward="true" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
-          <folding>
-            <element signature="e#15#33#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tsar/correlate.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="228">
-          <caret line="12" column="4" lean-forward="true" selection-start-line="12" selection-start-column="4" selection-end-line="12" selection-end-column="4" />
-          <folding>
-            <element signature="e#98#116#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/AppData/Local/Enthought/Canopy/User/Lib/site-packages/pandas/core/generic.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="272">
@@ -1143,55 +882,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tsar/datamodel.py">
+    <entry file="file://$PROJECT_DIR$/tsar/errors.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="912">
-          <caret line="76" column="7" lean-forward="true" selection-start-line="76" selection-start-column="7" selection-end-line="76" selection-end-column="7" />
-          <folding>
-            <marker date="1510784569190" expanded="true" signature="0:1382" ph="&quot;&quot;&quot;Python data models to handle and constraint various type of time series...&quot;&quot;&quot;" />
-            <marker date="1510784569190" expanded="true" signature="1384:1665" ph="import ..." />
-            <marker date="1510784569190" expanded="true" signature="1814:2563" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="1819:2069" ph="&quot;&quot;&quot;Raise errors if index is not valid...&quot;&quot;&quot;" />
-            <marker date="1510784569190" expanded="true" signature="2589:5365" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="2594:3054" ph="&quot;&quot;&quot;Time-value pair base class...&quot;&quot;&quot;" />
-            <marker date="1510784569190" expanded="true" signature="3113:3894" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="3962:4721" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="4777:5289" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="4911:5063" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="5105:5263" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="5342:5365" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="5404:10278" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="5409:7024" ph="&quot;&quot;&quot;Time-value paired pandas Series...&quot;&quot;&quot;" />
-            <marker date="1510784569190" expanded="true" signature="7142:7865" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="7142:7927" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="7191:7333" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="7433:7495" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="7970:7995" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="8065:8093" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="8138:8187" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="8227:8266" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="8309:8365" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="8406:8489" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="8536:9789" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="8545:8765" ph="&quot;&quot;&quot;...&quot;&quot;&quot;" />
-            <marker date="1510784569190" expanded="true" signature="8792:8903" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="8938:9161" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="8995:9160" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="9204:9662" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="9338:9487" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="9506:9662" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="9833:10113" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="9842:9959" ph="&quot;&quot;&quot;Convert TVPSeries to TVPDataFrame...&quot;&quot;&quot;" />
-            <marker date="1510784569190" expanded="true" signature="10170:10278" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="10323:12685" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="10328:11415" ph="&quot;&quot;&quot;Time-values paired pandas DataFrame...&quot;&quot;&quot;" />
-            <marker date="1510784569190" expanded="true" signature="11520:11921" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="11987:12015" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="12065:12090" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="12147:12336" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="12397:12685" ph="..." />
-            <marker date="1510784569190" expanded="true" signature="12714:12756" ph="..." />
-          </folding>
+        <state relative-caret-position="114">
+          <caret line="6" column="22" lean-forward="false" selection-start-line="6" selection-start-column="6" selection-end-line="6" selection-end-column="33" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1200,6 +895,55 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tsar/test/test_datamodel.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="21" column="0" lean-forward="false" selection-start-line="21" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
+          <folding>
+            <marker date="1510768779329" expanded="true" signature="668:684" ph="import ..." />
+            <marker date="1510768779329" expanded="true" signature="889:3961" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tsar/correlate.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="261">
+          <caret line="26" column="4" lean-forward="true" selection-start-line="26" selection-start-column="4" selection-end-line="26" selection-end-column="4" />
+          <folding>
+            <element signature="e#98#116#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tsar/data.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="418">
+          <caret line="50" column="22" lean-forward="true" selection-start-line="50" selection-start-column="22" selection-end-line="50" selection-end-column="22" />
+          <folding>
+            <element signature="e#15#33#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tsar/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tsar/datamodel.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="489">
+          <caret line="31" column="4" lean-forward="true" selection-start-line="31" selection-start-column="4" selection-end-line="31" selection-end-column="4" />
+          <folding>
+            <element signature="e#68#86#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
