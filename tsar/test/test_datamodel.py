@@ -14,16 +14,11 @@ Current implemented test:
 # TODO: initiate TVPSeries with valid dictionary should pass
 
 
-
-import os
-import sys
+import pandas as pd
 import unittest
-
-# Relative import of the tvp module TODO remove when packaging
-Folder = os.path.dirname(__file__)
-ParentFolder = os.path.dirname(Folder)
-sys.path.insert(0, '{}/tvp'.format(ParentFolder))
-from tvp.base import *
+from tsar.datamodel import TVPSeries, TVPDataFrame
+from tsar.errors import NotMonotonicIncreasingError
+from tsar.errors import NotFixedFrequencyError
 
 
 class TestTVPSeriesInstantiation(unittest.TestCase):

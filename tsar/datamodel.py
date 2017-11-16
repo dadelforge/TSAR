@@ -1,11 +1,47 @@
-"""Python model to handle univariate and multivariate time series object with pandas
+"""Python data models to handle and constraint various type of time series
 
-The purposes of the time series library is to ensure that time series index is consistent.
+Pandas data model may already hold a lot of information about the nature of a time series.
+
+Notes
+-----
+
+This module should be revised to be less complex
+
+Available Data models:
+----------------------
+
+We basically define two data model for time series:
+
+- Equidistant Time Unaware Numerical value pairs Series/DataFrame (ETUNSeries/ETUNDataFrame)
+
+These are not indexed with timestamps but are assumed to be equidistant. 
+Values are constraint to be numeric.
+
+- Equidistant Time Aware Numerical value pairs Series/DataFrame (ETANSeries/ETUNDataFrame)
+
+These are time series indexed with equidistant increasing timestamps. 
+Values are constraint to be numeric.
+
+
+Not implemented Models:
+-----------------------
+
+This are not implemented but one may derived multiple data model according to series metadata.
+These are non exhaustive examples and they should not be implemented anytime soon.
+
+Using categorical variable:
+- Equidistant Time Aware Categorical value pairs Series/DataFrame (ETACSeries/ETUCDataFrame)
+
+When time-zone is known:
+- Time-Zoned Equidistant Time Aware Numerical value Series/DataFrame (tzETANSeries/tzETANDataFrame)
+
+When spatial location and representative area is known:
+- Equistant Time Aware Numerical value pairs GeoSeries/GeoDataFrame (ETANGeoSeries/ETANGeoDataFrame)
+
+...
+
 
 """
-
-# TODO: adding a non numeric column to TVPDataframe should throw an error
-
 
 import inspect
 import logging  # TODO: remove it after dev
@@ -15,24 +51,11 @@ import pandas as pd
 from pandas.core.generic import NDFrame
 from pandas.core.internals import SingleBlockManager
 
+from errors import NotFixedFrequencyError
+from errors import NotMonotonicIncreasingError
+
 # TODO: remove it after dev
 logging.basicConfig(filename='debug.log', level=logging.DEBUG)
-
-
-# User defined exceptions
-class TVPError(Exception):
-    """Base class for tvp errors"""
-    pass
-
-
-class NotMonotonicIncreasingError(TVPError):
-    """Raised when a datetime index is not monotonic increasing"""
-    pass
-
-
-class NotFixedFrequencyError(TVPError):
-    """Raised when a datetime index has no fixed frequency"""
-    pass
 
 
 # User defined decorators
@@ -88,7 +111,7 @@ class TVPBase(NDFrame):
         
     """
 
-    def __new__(cls, *args, **kwargs):
+    def __new__(cls, datamodel='infer', *args, **kwargs):
 
         # dictionary of all init parameters
         user_args = cls._buildargdict('__init__', args, kwargs)
@@ -107,9 +130,14 @@ class TVPBase(NDFrame):
         if index is None and isinstance(data, NDFrame):
             index = data.index
 
-        _validate_index(index)
+        # inference of data model
+        if datamodel == 'infer':
+            datamodel = cls._infer_datamodel(index)
 
-        return NDFrame.__new__(cls)
+        if datamodel.startswith('ETAN'):
+            _validate_index(index)
+
+        return NDFrame.__new__(cls, datamodel=datamodel, *args, **kwargs)
 
     @classmethod
     def _buildargdict(cls, method, args, kwargs):
@@ -140,6 +168,25 @@ class TVPBase(NDFrame):
             user_dict[key] = val
 
         return user_dict
+
+    @classmethod
+    def _infer_datamodel(cls, index):
+        """Infer data model from index and from instance
+        """
+        datamodel = None
+
+        if issubclass(cls, pd.Series):
+            if isinstance(index, pd.DatetimeIndex):
+                datamodel = 'ETANSeries'
+            else:
+                datamodel = 'ETUNSeries'
+        if issubclass(cls, pd.DataFrame):
+            if isinstance(index, pd.DatetimeIndex):
+                datamodel = 'ETANDataFrame'
+            else:
+                datamodel = 'ETUNDataFrame'
+
+        return datamodel
 
     @property
     def _constructor_expanddim(self):
@@ -203,7 +250,17 @@ class TVPSeries(TVPBase, pd.Series):
          
     """
 
-    def __init__(self, data=None, index=None, dtype=None, name=None, copy=False, fastpath=False):
+    def __init__(self, data=None, index=None, dtype=None, name=None, copy=False, fastpath=False, datamodel='infer'):
+
+        # new properties
+
+        _metadata = [
+            'datamodel',
+            'is_equidistant',
+            'frequency',
+            'is_timeaware',
+            'is_numeric'
+        ]
 
         # checking if data is a series
 
@@ -220,7 +277,10 @@ class TVPSeries(TVPBase, pd.Series):
 
         if not np.issubdtype(data.dtype, np.number):
             raise TypeError('Values are not numeric')
-        super(TVPSeries, self).__init__(data, index, dtype, name, copy, fastpath)
+
+        super(TVPSeries, self).__init__(data, index, dtype, name, copy, fastpath, datamodel)
+
+        self.datamodel = self._validate_datamodel(datamodel)
 
     @property
     def _constructor(self):
@@ -229,6 +289,75 @@ class TVPSeries(TVPBase, pd.Series):
     @property
     def _constructor_expanddim(self, *args, **kwargs):
         return TVPDataFrame
+
+    @property
+    def is_equidistant(self):
+        return self.index.infer_freq is not None
+
+    @property
+    def frequency(self):
+        return self.index.infer_freq()
+
+    @property
+    def is_timeaware(self):
+        return isinstance(self.index, pd.DataTimeIndex)
+
+    @property
+    def is_numeric(self):
+        values = self.values
+        return np.issubdtype(values.dtype, np.number)
+
+    def _validate_datamodel(self, datamodel):
+        """
+        
+        Parameters
+        ----------
+        datamodel
+            dict a data model dictionary
+            str 'infer'
+
+        Returns
+        -------
+            dict a data model dictionary
+
+        """
+
+        default_model = {
+            'is_equidistant': True,
+            'is_timeaware': False,
+            'is_numeric': True
+        }
+
+        if datamodel == 'infer':
+
+            # Build new model
+
+            newmodel = {
+                'is_equidistant': self.is_equidistant,
+                'is_timeaware': self.is_timeaware,
+                'is_numeric': self.is_numeric
+            }
+
+        elif isinstance(datamodel, dict):
+
+            # check if all required keys are in the datamodel
+
+            if all(key in datamodel for key in default_model.keys()):
+
+                # validate equidistant
+
+                if self.is_equidistant != datamodel['is_equidistant']:
+                    raise ValueError
+
+            else:
+                missing_keys = [k not in default_model.keys for k in datamodel.keys()]
+                raise KeyError('datamodel default keys are missing')
+
+
+        else:
+            raise TypeError('datamodel should be \'infer\' or type dict, not type {}'.format(type(datamodel)))
+
+
 
     def to_frame(self, *args, **kwargs):
         """
@@ -246,7 +375,7 @@ class TVPSeries(TVPBase, pd.Series):
         return tdf
 
     def _set_axis(self, axis, labels, *args, **kwargs):
-        _validate_index(labels)
+        _validate_dateindex(labels)
         super(TVPSeries, self)._set_axis(axis, labels, *args, **kwargs)
 
 
@@ -296,7 +425,7 @@ class TVPDataFrame(TVPBase, pd.DataFrame):
     
     """
 
-    def __init__(self, data=None, index=None, columns=None, dtype=None, copy=False):
+    def __init__(self, data=None, index=None, columns=None, dtype=None, copy=False, datamodel='infer'):
 
         # checking if data is SingleBlockManager
         if isinstance(data, SingleBlockManager):
@@ -306,7 +435,10 @@ class TVPDataFrame(TVPBase, pd.DataFrame):
 
         if not np.issubdtype(data.dtype, np.number):
             raise TypeError('Values are not numeric')
-        super(TVPDataFrame, self).__init__(data, index, columns, dtype, copy)
+
+        self.datamodel = datamodel
+
+        super(TVPDataFrame, self).__init__(data, index, columns, dtype, copy, datamodel)
 
     @property
     def _constructor(self, data=None, index=None):
@@ -319,7 +451,8 @@ class TVPDataFrame(TVPBase, pd.DataFrame):
     def _set_axis(self, axis, labels, *args, **kwargs):
         """ Check index before any axis setting
         """
-        _validate_index(labels)
+        if self.datamodel:
+            _validate_datetimeindex(labels)
         super(TVPDataFrame, self)._set_axis(axis, labels)
 
     def _sanitize_column(self, key, value, broadcast=True):

@@ -1,5 +1,6 @@
 # pynltsa
 
+Non Linear Time Series Analysis 
 
 ## Convention
 
