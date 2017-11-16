@@ -1,12 +1,16 @@
-# pynltsa
+# TSAR
+_Time Series Analysis Routines_
 
-Non Linear Time Series Analysis 
+## Time Data Model
 
-## Convention
+## Correlate
 
-### Coding
+## Decompose
 
+## Chaos 
 
-### Docstring
+## ...
+
+## Developpment
 
 * Use [Numpy style docstring](http://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_numpy.html#example-numpy)
