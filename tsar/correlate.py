@@ -3,19 +3,21 @@
 
 """
 
-#TODO: Add top level documentation
+# TODO: Add top level documentation
 
 import numpy as np
 import pandas as pd
+from sklearn.metrics import mutual_info_score
+
 import tsar
 from tsar.dtypes import is_1darray_like
-from sklearn.metrics import mutual_info_score, \
-    normalized_mutual_info_score
+
 
 # ----------------------------------------------------------------------
 # Self dependency functions
 
-def autocorrelation(ts, maxlag = 20):
+
+def autocorrelation(ts, maxlag=20):
     """Auto Correlation Function
     
     The auto correlation function is a metric of linear self dependence.
@@ -60,18 +62,16 @@ def autocorrelation(ts, maxlag = 20):
     # test for one-dimensional object
 
     if not is_1darray_like(ts):
-
         raise TypeError('Input object should be 1 dimensional numeric array like object.')
 
     # test for Index error
 
     if maxlag >= len(ts):
-
         raise IndexError('Maximum lag {} is greater than series length {}'.format(maxlag, len(ts)))
 
     # list of lags
 
-    lags = range(maxlag+1)
+    lags = range(maxlag + 1)
 
     # conversion of ts into a pd.Series
 
@@ -81,8 +81,18 @@ def autocorrelation(ts, maxlag = 20):
 
     return autocorr
 
-def automutualinfo(ts, maxlag=20, bins='sqrt'):
-    """
+
+def automutualinfo(ts, maxlag=20, bins='sqrt', logfunc=np.log, method='binned'):
+    """Auto Mutual Information
+    
+    Compute the discrete mutual information between time series and its 
+    successive lags. The discrete mutual information is given by:
+    
+    .. math::
+
+        MI(X,Y)=\sum_{x \in X}^R \sum_{y \in Y} P(x,y)\log\\frac{P(x,y)}{P(x)P'(y)}
+        
+        
     
     Parameters
     ----------
@@ -138,13 +148,18 @@ def automutualinfo(ts, maxlag=20, bins='sqrt'):
     Examples
     --------
     
-    >>> ts = tsar.data.lorenz()['x']
-    >>> ami = automutualinfo(ts, maxlag=20)
-    >>> print ami
+    >>> ts = tsar.data.lorenz()['x'].iloc[:100]
+    >>> ami = automutualinfo(ts, maxlag=10, bins='sqrt')
+    >>> print ami[:2]
+    11
 
     References
     ----------
     
+    [1] Kraskov, Alexander, Harald Stoegbauer, and Peter Grassberger. 
+        "Estimating Mutual Information." Physical Review E 69, no. 6 (June 23, 2004). 
+        https://doi.org/10.1103/PhysRevE.69.066138.
+
     [1] Sklearn: Mutual Information between two clusterings
         http://scikit-learn.org/stable/modules/generated/sklearn.metrics.mutual_info_score.html
     [2] numpy.histogram2d
@@ -154,17 +169,21 @@ def automutualinfo(ts, maxlag=20, bins='sqrt'):
     
     """
 
-    # test for one-dimensional object
+    # check for one-dimensional object
 
     if not is_1darray_like(ts):
-
         raise TypeError('Input object should be 1 dimensional numeric array like object.')
 
-    # test for Index error
+    # check for Index error
 
     if maxlag >= len(ts):
-
         raise IndexError('Maximum lag {} is greater than series length {}'.format(maxlag, len(ts)))
+
+    # check for method
+
+    if method != 'binned':
+        raise NotImplementedError(
+            'Not implemented method {}. Only binned method is currently supported.'.format(method))
 
     # conversion of ts into a pd.Series
 
@@ -176,7 +195,7 @@ def automutualinfo(ts, maxlag=20, bins='sqrt'):
 
     # use numpy histogram to get bins
 
-    bin_edges = np.histogram(ts.values, bins=bins)[1]
+    #bin_edges = np.histogram(ts.values, bins=bins)[1]
 
     # define auto mutual information list
     automi = []
@@ -185,21 +204,22 @@ def automutualinfo(ts, maxlag=20, bins='sqrt'):
 
         ts_lag = ts.shift(t)
 
-        # use numpy histogram2d to build the contigency matrix
+        x = ts[t:]
+        y = ts_lag[t:]
 
-        contigency_xy = np.histogram2d(ts, ts_lag, bin_edges)[0]
-
-        # compute mutual information
-
-        mi = mutual_info_score(None, None, contingency=contigency_xy)
-
-        # append result to list
+        mi = _compute_mi_binned(x, y, bins=bins, logfunc=logfunc)
 
         automi.append(mi)
 
     return automi
 
+def crosscorrelation():
+    pass
 
-if __name__=='__main__':
+def crossmutualinfo():
+    pass
+
+if __name__ == '__main__':
     import doctest
+
     doctest.testmod()
