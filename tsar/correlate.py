@@ -1,5 +1,6 @@
 """Python functions to measure dependencies 
 
+#TODOC
 
 """
 
@@ -11,6 +12,7 @@ from sklearn.metrics import mutual_info_score
 
 import tsar
 from tsar.dtypes import is_1darray_like
+from tsar.algorithms.mutualinformation import _compute_mi_binned
 
 
 # ----------------------------------------------------------------------
@@ -46,9 +48,9 @@ def autocorrelation(ts, maxlag=20):
     --------
     
     >>> ts = tsar.data.lorenz()['x']
-    >>> rho = autocorrelation(ts, maxlag=10)
-    >>> print len(rho)
-    11
+    >>> rho = autocorrelation(ts, maxlag=2)
+    >>> print rho
+    [0.99999999999999989, 0.9985116968252471, 0.9940665907167473]
     
     Raises
     ------
@@ -58,6 +60,9 @@ def autocorrelation(ts, maxlag=20):
         Raised if maxlag greater than time series length.
     
     """
+
+    # TODO: prefer not using pandas to lower dependencies
+    # TODO: draft doc to be imporved
 
     # test for one-dimensional object
 
@@ -149,9 +154,9 @@ def automutualinfo(ts, maxlag=20, bins='sqrt', logfunc=np.log, method='binned'):
     --------
     
     >>> ts = tsar.data.lorenz()['x'].iloc[:100]
-    >>> ami = automutualinfo(ts, maxlag=10, bins='sqrt')
-    >>> print ami[:2]
-    11
+    >>> ami = automutualinfo(ts, maxlag=2, bins='sqrt')
+    >>> print ami
+    [2.1316557270483645, 1.7303407746505963, 1.5756941465276517]
 
     References
     ----------
@@ -168,6 +173,7 @@ def automutualinfo(ts, maxlag=20, bins='sqrt', logfunc=np.log, method='binned'):
         https://docs.scipy.org/doc/numpy-1.13.0/reference/generated/numpy.histogram.html
     
     """
+    #TODO : draft documentation to be improved
 
     # check for one-dimensional object
 
