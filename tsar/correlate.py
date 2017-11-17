@@ -62,7 +62,7 @@ def autocorrelation(ts, maxlag=20):
     """
 
     # TODO: prefer not using pandas to lower dependencies
-    # TODO: draft doc to be imporved
+    # TODO: draft doc to be improved
 
     # test for one-dimensional object
 
