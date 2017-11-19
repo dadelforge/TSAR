@@ -3,11 +3,12 @@
 """
 
 import numpy as np
+from scipy.linalg import svd
 
 import tsar
 
 
-class Ssa(object):
+class ssa(object):
     """A class for Singular Spectrum Analysis 
     
         
@@ -37,6 +38,7 @@ class Ssa(object):
         self.u = u
         self.s = s
         self.v = v
+
 
     def _trajectory_embed(self):
         """Embed a time series into a L-trajectory matrix
@@ -78,6 +80,8 @@ class Ssa(object):
         for i in range(k):
             trajectory[:, i] = ts[i:i + L]
 
+        self.k = k
+
         return trajectory
 
     def _decompose(self):
@@ -98,12 +102,49 @@ class Ssa(object):
 
         return u, s, v
 
+    def _recompose(self, groups=None):
 
-def _recompose():
-    pass
+        U = self.u
+        V = self.v
 
+        m = V.shape[0]
+        n = U.shape[0]
+        S = np.zeros((n, m))
+        S[:m,:n] = np.diag(self.s)
+
+        T = np.dot(U, np.dot(S, V))
+
+        assert(np.allclose(self.trajectories, T))
+
+        # Averaging all diagonals
+
+        ts = [np.mean(T[::-1,:].diagonal(i)) for i in range(-T.shape[0]+1,T.shape[1])]
+
+        return ts
+
+    def _get_diagonals(self, a):
+        rows, cols = a.shape
+        fill = np.zeros(((cols - 1), cols), dtype=a.dtype)
+        stacked = np.vstack((a, fill, a))
+        major_stride, minor_stride = stacked.strides
+        strides = major_stride, minor_stride * (cols + 1)
+        shape = (rows + cols - 1, cols)
+        return np.lib.stride_tricks.as_strided(stacked, shape, strides)
 
 if __name__ == '__main__':
     import doctest
+    import tsar
+    import matplotlib.pyplot as plt
+    ts = tsar.data.lorenz()['x']
+    myssa = ssa(ts)
+    ts2 = myssa._recompose()
 
-    doctest.testmod()
+
+    fig = plt.figure()
+    ax = fig.gca()
+    ax.plot(ts, label = 'original')
+    ax.plot(ts2, linestyle='--', label = 'reconstruction')
+    ax.legend()
+    plt.show()
+    print len(ts), len(ts2)
+    #doctest.testmod()
