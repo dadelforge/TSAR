@@ -1,14 +1,26 @@
 """Singular Spectrum Analysis with numpy
 
 """
+import warnings
 
 import matplotlib.pyplot as plt
 import numpy as np
 
-# TODO: implement a get method to retrieve group time series
+from tsar.devutil.performance import mytimer
+from tsar.dtypes import is_1darray_like
+
+try:
+    import pandas as pd
+
+    __TS_DEFAULT_TYPE__ = pd.Series
+except:
+    warnings.warn('pandas module missing: __TS__DEFAULT_TYPE__ set to np.array')
+    __TS_DEFAULT_TYPE__ = np.array
 
 
-class ssa(object):
+# TODO: test behavior with np.nan in series
+
+class Ssa(object):
     """A class for Singular Spectrum Analysis 
     
     Singular Spectrum Analysis (SSA) is a non-parametric method
@@ -30,8 +42,48 @@ class ssa(object):
     
     Examples
     --------
-    #TODOC
     
+    Loading time series
+    >>> co2 = pd.read_csv("co2.csv", index_col=0, header=None)
+    >>> co2 = co2[co2.columns[0]]
+    >>> co2.describe()
+    count    468.000000
+    mean     337.053526
+    std       14.966220
+    min      313.180000
+    25%      323.530000
+    50%      335.170000
+    75%      350.255000
+    max      366.840000
+    Name: 1, dtype: float64
+    
+    Decomposition
+    >>> co2_ssa = Ssa(co2)
+    
+    Reconstruction
+    >>> groups = { 'Trend': [0, 3], 'Season': [1,2,4,5] }
+    >>> co2_ssa.reconstruct(groups)
+    >>> print co2_ssa.groups
+    ['Original', 'Trend', 'Season', 'Residuals']
+
+    >>> co2_ssa['Season'].describe()
+    count    468.000000
+    mean      -0.002320
+    std        2.055533
+    min       -3.461722
+    25%       -1.883337
+    50%        0.291613
+    75%        1.757231
+    max        3.301371
+    dtype: float64
+    
+    Weighted correlation of components
+    >>> co2_ssa.wcorr(components=3)
+    array([[ 1.        , -0.0124797 ,  0.00814555],
+           [-0.0124797 ,  1.        ,  0.97536049],
+           [ 0.00814555,  0.97536049,  1.        ]])
+           
+    >>> co2_ssa.plot('wcorr', n=20)
         
     References
     ----------
@@ -41,137 +93,297 @@ class ssa(object):
         
     """
 
-    def __init__(self, ts, w=None):
+    def __init__(self, ts, window=None, tstype=__TS_DEFAULT_TYPE__):
 
         # TODO check types
 
         self.ts = np.array(ts)
-        self.n = len(ts)
+        self.tstype = tstype
+        self._n = len(ts)
+
+        self._matrixgrp = dict()
 
         # define window length if none
 
-        if w is None:
-            w = self.n // 2
+        if window is None:
+            window = self._n // 2
 
-        self.w = w
-        self.k = self.n - self.w + 1
-        self.x = self._trajectory_embed()
-        self.xrank = np.linalg.matrix_rank(self.x)
+        self.window = window
 
-        # SVD results
-        self.u, self.s, self.v = None, None, None
+        # define number of trajectory vectors
+
+        self._k = self._n - self.window + 1
+
+        # compute trajectory matrix
+
+        self._x = self._embedseries()
+
+        # set rank of trajectory matrix
+
+        self._xrank = np.linalg.matrix_rank(self._x)
+
+        # add original matrix to matrix group
+
+        self._matrixgrp['Original'] = self._x
+
+        # reference SVD results
+
+        self.svd = [None, None, None]
+
+        # run decomposition
 
         self._decompose()
 
+    def __getitem__(self, item):
+        # TODO : error handling
+        ts = self._getseries(item)
+        return self.tstype(ts)
 
+    # --------------------------------------------------------
+    # Properties
 
     @property
     def groups(self):
-        if not hasattr(self, '_grpmatrix'):
-            groups = None
-        else:
-            groups = self._grpmatrix.keys()
-        return groups
-
-    def _trajectory_embed(self):
-        """Embed a time series into a L-trajectory matrix    
+        """List of reconstructed group names
+        
+        Group names are ordered so that the first one corresponds
+        the the 'Original' time series group and the last one to
+        the 'Residuals'.
+        
         """
 
-        ts = self.ts
-        w = self.w
-        n = self.n
-        k = self.k
+        groupnames = self._matrixgrp.keys()
 
-        trajectory = np.zeros(shape=(w, k))
+        if 'Original' in groupnames:
+            groupnames = ['Original'] + [n for n in groupnames if n != 'Original']
 
-        for i in range(k):
-            trajectory[:, i] = ts[i:i + w]
+        return groupnames
 
-        return np.matrix(trajectory)
-
-    def _decompose(self):
-        """Singular value decomposition           
-        """
-
-        # rank of the trajectory matrix x
-        d = self.xrank
-        x = self.x
-        assert (d == min(self.x.shape))
-
-        # decomposition of the trajectory matrix x
-        # u and v are unitary and s is a 1-d array of d singular values.
-
-        u, s, v = np.linalg.svd(self.x)
-
-        # note: types are all np.matrix
-
-        self.xi = dict()
-
-        for i in range(d):
-            si = np.sqrt(s[i])  # square root of eigenvalue i
-            ui = u[:, i]  # eigenvector i corresponding to si
-            vi = x.T * ui / si
-
-            self.xi[i] = si * ui * vi.T
-
-        self.svd = [u, s, v]
+    # --------------------------------------------------------
+    # Public methods
 
     def reconstruct(self, groups=None):
 
-        # TODO: somehow ts length is reduced by 1
-        # TODO: store residuals
-
-        self._grpmatrix = dict()
+        # TODO: DOC
 
         # Define a list of group indexes
 
         if groups is None:
-            idx_list = [range(len(self.xi))]
+            idx_list = [range(len(self._xi))]
             names = ['reconstruction']
         else:
             idx_list = [i for i in groups.values()]
             names = [name for name in groups.keys()]
 
         for name, idx_grp in zip(names, idx_list):
-            x_group = [self.xi[key] for key in idx_grp]
+            x_group = [self._xi[key] for key in idx_grp]
             x_sum = np.sum(x_group, axis=0)
 
-            self._grpmatrix[name] = x_sum
+            self._matrixgrp[name] = x_sum
 
         all_grp_idx = [ix for sublist in idx_list for ix in sublist]
 
-        residual_idx = [ix for ix in range(len(self.xi)) if ix not in all_grp_idx]
+        residual_idx = [ix for ix in range(len(self._xi)) if ix not in all_grp_idx]
 
-        x_res = [self.xi[ix] for ix in residual_idx]
+        x_res = [self._xi[ix] for ix in residual_idx]
         x_res_sum = np.sum(x_res, axis=0)
 
         if bool(x_res_sum.any()):
-            self._grpmatrix['residuals'] = x_res_sum
+            self._matrixgrp['Residuals'] = x_res_sum
+
+    def wcorr(self, components=None):
+        """Compute the weighted correlation matrix
+
+        See equation in ref [1], paragraph separability
+
+        Returns
+        -------
+
+        References
+        ----------
+
+        [1] Hassani, Hossein. "Singular Spectrum Analysis: Methodology and Comparison."
+        MPRA Paper, April 1, 2007. https://mpra.ub.uni-muenchen.de/4991/.
+
+
+        """
+        # TODO: optimize for loop
+
+        # check for components type
+
+        if isinstance(components, int):
+
+            comp_idx = range(components)
+
+        elif is_1darray_like(components):
+
+            comp_idx = components
+
+        elif components is None:
+
+            comp_idx = self._xi.keys()
+
+        else:
+
+            raise TypeError('components should be either None, int or array-like.')
+
+        # check if components exists
+
+        if not set(comp_idx).issubset(self._xi.keys()):
+            raise IndexError('Components are out of range.')
+
+        k = self._k  # number of lagged vectors
+        n = self._n  # series length
+        w = self.window  # window parameter
+        cn = len(comp_idx)  # number of components
+
+        w_k = min((k, w, n - k)) * np.ones(n)
+
+        # intialize w-corr upper right matrix
+
+        wcorr_ur = np.zeros(shape=(cn, cn))
+
+        # reconstruction of selected components
+
+        tsn = np.array([self._antidiagmean(x) for x in self._xi.values()[:cn]])
+
+        # diag offsets
+
+        offsets = range(cn)
+
+        # we compute wcorr using an indices based lagged convolution
+        # doing so we compute the upper right correlation matrix
+        # then we perform the symmetry
+
+        for offset in offsets:
+            lagged_tsn = np.array([tsn[offset:, :], tsn[:cn - offset, :]])
+
+            # weighted sum for components i j lagged by offset
+            # see reference for equation
+
+            wsum_ij = np.sum(w_k * np.product(lagged_tsn, axis=0), axis=1)
+            sqrtwsum_i = np.sqrt(np.sum(w_k * lagged_tsn[0] ** 2, axis=1))
+            sqrtwsum_j = np.sqrt(np.sum(w_k * lagged_tsn[1] ** 2, axis=1))
+
+            rho = wsum_ij / (sqrtwsum_i * sqrtwsum_j)
+
+            # wcorr offset diagonal axis 0 coordinate
+
+            drng = np.array(offsets[:len(rho)])
+            wcorr_ur[drng, drng + offset] = rho
+
+        # get lower left symmetry
+
+        wcorr_ll = wcorr_ur.T.copy()
+
+        # remove diagonal values of lower left triangular matrix
+
+        np.fill_diagonal(wcorr_ll, 0.)
+
+        # restore symmetry by addition of upperright and lower left
+
+        wcorr = wcorr_ur + wcorr_ll
+
+        return wcorr
+
+    # --------------------------------------------------------
+    # Private methods
+
+    def _embedseries(self):
+        """Embed a time series into a L-trajectory matrix
+        
+        Returns
+        -------
+        x : np.matrix
+            the trajectory matrix of size (window, k)
+        
+        """
+
+        ts = self.ts
+        w = self.window
+        n = self._n
+        k = self._k
+
+        x = np.zeros(shape=(w, k))
+
+        for i in range(k):
+            x[:, i] = ts[i:i + w]
+
+        return np.matrix(x)
+
+    def _decompose(self):
+        """Singular value decomposition           
+        """
+
+        # rank of the trajectory matrix x
+        d = self._xrank
+        x = self._x
+        assert (d == min(self._x.shape))
+
+        # decomposition of the trajectory matrix x
+        # u and v are unitary and s is a 1-d array of d singular values.
+
+        u, s, v = np.linalg.svd(self._x)
+
+        # note: types are all np.matrix
+
+        self._xi = dict()
+
+        for i in range(d):
+            si = np.sqrt(s[i])  # square root of eigenvalue i
+            ui = u[:, i]  # eigenvector i corresponding to si
+            vi = x.T * ui / si
+
+            self._xi[i] = si * ui * vi.T
+
+        self.svd = [u, s, v]
 
     def _getseries(self, name):
 
-        x = self._grpmatrix[name]
+        x = self._matrixgrp[name]
 
         # anti diagonal averaging
 
-        ts = [np.mean(x[::-1,:].diagonal(i)) for i in range(-x.shape[0]+1,x.shape[1])]
+        ts = self._antidiagmean(x)
 
         return ts
 
+    @staticmethod
+    def _antidiagmean(x):
+        """Average the antidiagonal of matrix
+        
+        Parameters
+        ----------
+        matrix : np.matrix
+
+        Returns
+        -------
+        
+        timeseries: np.array
+
+        """
+
+        ts = [np.mean(x[::-1, :].diagonal(i)) for i in range(-x.shape[0] + 1, x.shape[1])]
+
+        return np.array(ts)
+
     # --------------------------------------------------------
-    # Plotting
+    # Plotting methods
 
-    def plot(self, name='values', show=True, **pltkw):
+    def plot(self, pltname='values', show=True, **pltkw):
 
-        if name not in self._plotnames:
+        if pltname not in self._plotnames:
             names = ','.join(self._plotnames)
-            raise AttributeError('Unknown plot name \'{}\'. Name should be on of {}.'.format(name, names))
+            raise AttributeError('Unknown plot name \'{}\'. Name should be on of {}.'.format(pltname, names))
 
-        if name == 'values':
+        if pltname == 'values':
             fig, ax = self._value_plot(**pltkw)
 
-        if name == 'series':
+        if pltname == 'series':
             fig, ax = self._series_plot(**pltkw)
+
+        if pltname == 'wcorr':
+            fig, ax = self._wcorr_plot(**pltkw)
 
         plt.tight_layout()
 
@@ -184,7 +396,8 @@ class ssa(object):
     def _plotnames(self):
         names = [
             'values',
-            'series'
+            'series',
+            'wcorr'
         ]
         return names
 
@@ -197,45 +410,54 @@ class ssa(object):
         ax.set_xlabel('Index')
         return fig, ax
 
-    def _series_plot(self):
+    def _series_plot(self, **pltkw):
 
         groups = self.groups
+
         if len(groups) > 1:
 
-            fig, axarr = plt.subplots(len(groups), 1)
+            fig, axarr = plt.subplots(len(groups), 1, sharex=True)
 
             for i, g in enumerate(groups):
                 ts = self._getseries(g)
-                axarr[i].plot(ts)
+                axarr[i].plot(ts, **pltkw)
                 axarr[i].set_title(g)
-
-
-
-
+                if i == len(groups) - 1:
+                    axarr[i].set_xlabel('Time')
+        else:
+            pass
 
         return fig, axarr
 
-    def _wcor_plot(self):
-        pass
+    def _wcorr_plot(self, n=50, *args, **kwargs):
+
+        wcorr = self.wcorr(components=n)
+
+        fig = plt.figure()
+        ax = fig.gca()
+        im = ax.pcolor(wcorr, vmin=-1, vmax=1, cmap='PiYG')
+        ax.set_aspect('equal')
+
+        # set ticks
+
+        ticks = np.arange(wcorr.shape[0])
+        ax.set_xticks(ticks + 0.5, minor=False)
+        ax.set_yticks(ticks + 0.5, minor=False)
+
+        ax.set_xticklabels(int(x) for x in ticks)
+        ax.set_yticklabels(int(x) for x in ticks)
+
+        ax.set_title('w-correlation matrix')
+
+        fig.colorbar(im)
+
+        return fig, ax
+
+
 
 
 if __name__ == '__main__':
+    import doctest
     import pandas as pd
 
-    co2 = pd.read_csv("co2.csv", index_col=0, header=None)
-    co2 = co2[co2.columns[0]]
-    co2_ssa = ssa(co2)
-    print co2_ssa.groups
-    groups = {
-        'Trend': [0, 3],
-        'Season1': [1,2],
-        'Season2': [4,5]
-    }
-    co2_ssa.reconstruct(groups)
-    print co2_ssa.groups
-
-    co2_ssa.plot('series')
-
-    #print co2_ssa.plot(name='series')
-
-    # doctest.testmod()
+    doctest.testmod()
