@@ -1,0 +1,695 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>tsar.algorithms.basicssa &mdash; pytsa 0.0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="pytsa 0.0.1 documentation" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> pytsa
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../gettingstarted.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../apidoc.html">API documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">pytsa</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>tsar.algorithms.basicssa</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for tsar.algorithms.basicssa</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Singular Spectrum Analysis with numpy</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">tsar.devutil.performance</span> <span class="k">import</span> <span class="n">mytimer</span>
+<span class="kn">from</span> <span class="nn">tsar.dtypes</span> <span class="k">import</span> <span class="n">is_1darray_like</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+    <span class="n">__TS_DEFAULT_TYPE__</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span>
+<span class="k">except</span><span class="p">:</span>
+    <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;pandas module missing: __TS__DEFAULT_TYPE__ set to np.array&#39;</span><span class="p">)</span>
+    <span class="n">__TS_DEFAULT_TYPE__</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span>
+
+
+<span class="c1"># TODO: test behavior with np.nan in series</span>
+
+<div class="viewcode-block" id="BasicSsa"><a class="viewcode-back" href="../../../tsar.html#tsar.decompose.BasicSsa">[docs]</a><span class="k">class</span> <span class="nc">BasicSsa</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A class for basic Singular Spectrum Analysis </span>
+<span class="sd">    </span>
+<span class="sd">    Singular Spectrum Analysis (SSA) is a non-parametric method</span>
+<span class="sd">    to decompose and recompose a signal into specific components:</span>
+<span class="sd">    trend, seasonality, noise, ... </span>
+<span class="sd">    </span>
+<span class="sd">    The method consists in embedding the time series into a</span>
+<span class="sd">    trajectory matrix. The matrix is then decomposed into </span>
+<span class="sd">    eigentriples using singular value decomposition. Eigentriples </span>
+<span class="sd">    can be grouped by user. Each group can be recomposed into a </span>
+<span class="sd">    time series component.</span>
+<span class="sd">    </span>
+<span class="sd">    Grouping can be user defined based on the interpretation of</span>
+<span class="sd">    the singular value plot or the w-corr plot.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    #TODOC</span>
+<span class="sd">    </span>
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    </span>
+<span class="sd">    Loading time series</span>
+<span class="sd">    </span>
+<span class="sd">    &gt;&gt;&gt; co2 = pd.read_csv(&quot;co2.csv&quot;, index_col=0, header=None)</span>
+<span class="sd">    &gt;&gt;&gt; co2 = co2[co2.columns[0]]</span>
+<span class="sd">    &gt;&gt;&gt; co2.describe()</span>
+<span class="sd">    count    468.000000</span>
+<span class="sd">    mean     337.053526</span>
+<span class="sd">    std       14.966220</span>
+<span class="sd">    min      313.180000</span>
+<span class="sd">    25%      323.530000</span>
+<span class="sd">    50%      335.170000</span>
+<span class="sd">    75%      350.255000</span>
+<span class="sd">    max      366.840000</span>
+<span class="sd">    Name: 1, dtype: float64</span>
+<span class="sd">    </span>
+<span class="sd">    Decomposition</span>
+<span class="sd">    </span>
+<span class="sd">    &gt;&gt;&gt; co2_ssa = BasicSsa(co2)</span>
+<span class="sd">    </span>
+<span class="sd">    Reconstruction</span>
+<span class="sd">    </span>
+<span class="sd">    &gt;&gt;&gt; groups = { &#39;Trend&#39;: [0, 3], &#39;Season&#39;: [1,2,4,5] }</span>
+<span class="sd">    &gt;&gt;&gt; co2_ssa.reconstruct(groups)</span>
+<span class="sd">    &gt;&gt;&gt; print co2_ssa.groups</span>
+<span class="sd">    [&#39;Original&#39;, &#39;Trend&#39;, &#39;Season&#39;, &#39;Residuals&#39;]</span>
+
+<span class="sd">    &gt;&gt;&gt; co2_ssa[&#39;Season&#39;].describe()</span>
+<span class="sd">    count    468.000000</span>
+<span class="sd">    mean      -0.002320</span>
+<span class="sd">    std        2.055533</span>
+<span class="sd">    min       -3.461722</span>
+<span class="sd">    25%       -1.883337</span>
+<span class="sd">    50%        0.291613</span>
+<span class="sd">    75%        1.757231</span>
+<span class="sd">    max        3.301371</span>
+<span class="sd">    dtype: float64</span>
+<span class="sd">    </span>
+<span class="sd">    Weighted correlation of components</span>
+<span class="sd">    </span>
+<span class="sd">    &gt;&gt;&gt; co2_ssa.wcorr(components=3)</span>
+<span class="sd">    array([[ 1.        , -0.0124797 ,  0.00814555],</span>
+<span class="sd">           [-0.0124797 ,  1.        ,  0.97536049],</span>
+<span class="sd">           [ 0.00814555,  0.97536049,  1.        ]])</span>
+<span class="sd">           </span>
+<span class="sd">    &gt;&gt;&gt; co2_ssa.plot(&#39;wcorr&#39;, n=20)</span>
+<span class="sd">        </span>
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    </span>
+<span class="sd">    [1] Singular Spectrum Analysis for Time Series | Nina Golyandina | Springer. </span>
+<span class="sd">    Accessed November 19, 2017. //www.springer.com/gp/book/9783642349126.</span>
+<span class="sd">        </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ts</span><span class="p">,</span> <span class="n">window</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">tstype</span><span class="o">=</span><span class="n">__TS_DEFAULT_TYPE__</span><span class="p">):</span>
+
+        <span class="c1"># TODO check types</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">ts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ts</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tstype</span> <span class="o">=</span> <span class="n">tstype</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">ts</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_matrixgrp</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+
+        <span class="c1"># define window length if none</span>
+
+        <span class="k">if</span> <span class="n">window</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">window</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n</span> <span class="o">//</span> <span class="mi">2</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">window</span> <span class="o">=</span> <span class="n">window</span>
+
+        <span class="c1"># define number of trajectory vectors</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_k</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">window</span> <span class="o">+</span> <span class="mi">1</span>
+
+        <span class="c1"># compute trajectory matrix</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_embedseries</span><span class="p">()</span>
+
+        <span class="c1"># set rank of trajectory matrix</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_xrank</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">matrix_rank</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_x</span><span class="p">)</span>
+
+        <span class="c1"># add original matrix to matrix group</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_matrixgrp</span><span class="p">[</span><span class="s1">&#39;Original&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_x</span>
+
+        <span class="c1"># reference SVD results</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">svd</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
+
+        <span class="c1"># run decomposition</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_decompose</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+        <span class="c1"># TODO : error handling</span>
+        <span class="n">ts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getseries</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tstype</span><span class="p">(</span><span class="n">ts</span><span class="p">)</span>
+
+    <span class="c1"># --------------------------------------------------------</span>
+    <span class="c1"># Properties</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">groups</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;List of reconstructed group names</span>
+<span class="sd">        </span>
+<span class="sd">        Group names are ordered so that the first one corresponds</span>
+<span class="sd">        the the &#39;Original&#39; time series group and the last one to</span>
+<span class="sd">        the &#39;Residuals&#39;.</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">groups</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_matrixgrp</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="s1">&#39;Original&#39;</span> <span class="ow">in</span> <span class="n">groups</span><span class="p">:</span>
+
+            <span class="n">firstgroup</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Original&#39;</span><span class="p">]</span>
+            <span class="n">others</span> <span class="o">=</span> <span class="p">[</span><span class="n">n</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">groups</span> <span class="k">if</span> <span class="n">n</span> <span class="o">!=</span> <span class="s1">&#39;Original&#39;</span><span class="p">]</span>
+            <span class="n">sortedgroups</span> <span class="o">=</span> <span class="n">firstgroup</span> <span class="o">+</span> <span class="n">others</span>
+
+        <span class="k">return</span> <span class="n">sortedgroups</span>
+
+    <span class="c1"># --------------------------------------------------------</span>
+    <span class="c1"># Public methods</span>
+
+    <span class="k">def</span> <span class="nf">reconstruct</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">groups</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+        <span class="c1"># TODO: DOC</span>
+
+        <span class="c1"># Define a list of group indexes</span>
+
+        <span class="k">if</span> <span class="n">groups</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">idx_list</span> <span class="o">=</span> <span class="p">[</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_xi</span><span class="p">))]</span>
+            <span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;reconstruction&#39;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">idx_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">groups</span><span class="o">.</span><span class="n">values</span><span class="p">()]</span>
+            <span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="n">name</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">groups</span><span class="o">.</span><span class="n">keys</span><span class="p">()]</span>
+
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">idx_grp</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">idx_list</span><span class="p">):</span>
+            <span class="n">x_group</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_xi</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">idx_grp</span><span class="p">]</span>
+            <span class="n">x_sum</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">x_group</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_matrixgrp</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">x_sum</span>
+
+        <span class="n">all_grp_idx</span> <span class="o">=</span> <span class="p">[</span><span class="n">ix</span> <span class="k">for</span> <span class="n">sublist</span> <span class="ow">in</span> <span class="n">idx_list</span> <span class="k">for</span> <span class="n">ix</span> <span class="ow">in</span> <span class="n">sublist</span><span class="p">]</span>
+
+        <span class="n">residual_idx</span> <span class="o">=</span> <span class="p">[</span><span class="n">ix</span> <span class="k">for</span> <span class="n">ix</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_xi</span><span class="p">))</span> <span class="k">if</span> <span class="n">ix</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">all_grp_idx</span><span class="p">]</span>
+
+        <span class="n">x_res</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_xi</span><span class="p">[</span><span class="n">ix</span><span class="p">]</span> <span class="k">for</span> <span class="n">ix</span> <span class="ow">in</span> <span class="n">residual_idx</span><span class="p">]</span>
+        <span class="n">x_res_sum</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">x_res</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">bool</span><span class="p">(</span><span class="n">x_res_sum</span><span class="o">.</span><span class="n">any</span><span class="p">()):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_matrixgrp</span><span class="p">[</span><span class="s1">&#39;Residuals&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">x_res_sum</span>
+
+<div class="viewcode-block" id="BasicSsa.wcorr"><a class="viewcode-back" href="../../../tsar.html#tsar.decompose.BasicSsa.wcorr">[docs]</a>    <span class="k">def</span> <span class="nf">wcorr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">components</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compute the weighted correlation matrix</span>
+
+<span class="sd">        See equation in ref [1], paragraph separability</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+
+<span class="sd">        References</span>
+<span class="sd">        ----------</span>
+
+<span class="sd">        [1] Hassani, Hossein. &quot;Singular Spectrum Analysis: Methodology and Comparison.&quot;</span>
+<span class="sd">        MPRA Paper, April 1, 2007. https://mpra.ub.uni-muenchen.de/4991/.</span>
+
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># TODO: optimize for loop</span>
+
+        <span class="c1"># check for components type</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">components</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+
+            <span class="n">comp_idx</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="n">components</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">is_1darray_like</span><span class="p">(</span><span class="n">components</span><span class="p">):</span>
+
+            <span class="n">comp_idx</span> <span class="o">=</span> <span class="n">components</span>
+
+        <span class="k">elif</span> <span class="n">components</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+
+            <span class="n">comp_idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_xi</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+
+        <span class="k">else</span><span class="p">:</span>
+
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;components should be either None, int or array-like.&#39;</span><span class="p">)</span>
+
+        <span class="c1"># check if components exists</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">set</span><span class="p">(</span><span class="n">comp_idx</span><span class="p">)</span><span class="o">.</span><span class="n">issubset</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_xi</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+            <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="s1">&#39;Components are out of range.&#39;</span><span class="p">)</span>
+
+        <span class="n">k</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_k</span>  <span class="c1"># number of lagged vectors</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n</span>  <span class="c1"># series length</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">window</span>  <span class="c1"># window parameter</span>
+        <span class="n">cn</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">comp_idx</span><span class="p">)</span>  <span class="c1"># number of components</span>
+
+        <span class="n">w_k</span> <span class="o">=</span> <span class="nb">min</span><span class="p">((</span><span class="n">k</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">n</span> <span class="o">-</span> <span class="n">k</span><span class="p">))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+
+        <span class="c1"># intialize w-corr upper right matrix</span>
+
+        <span class="n">wcorr_ur</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">cn</span><span class="p">,</span> <span class="n">cn</span><span class="p">))</span>
+
+        <span class="c1"># reconstruction of selected components</span>
+
+        <span class="n">tsn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">_antidiagmean</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_xi</span><span class="o">.</span><span class="n">values</span><span class="p">()[:</span><span class="n">cn</span><span class="p">]])</span>
+
+        <span class="c1"># diag offsets</span>
+
+        <span class="n">offsets</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="n">cn</span><span class="p">)</span>
+
+        <span class="c1"># we compute wcorr using an indices based lagged convolution</span>
+        <span class="c1"># doing so we compute the upper right correlation matrix</span>
+        <span class="c1"># then we perform the symmetry</span>
+
+        <span class="k">for</span> <span class="n">offset</span> <span class="ow">in</span> <span class="n">offsets</span><span class="p">:</span>
+            <span class="n">lagged_tsn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">tsn</span><span class="p">[</span><span class="n">offset</span><span class="p">:,</span> <span class="p">:],</span> <span class="n">tsn</span><span class="p">[:</span><span class="n">cn</span> <span class="o">-</span> <span class="n">offset</span><span class="p">,</span> <span class="p">:]])</span>
+
+            <span class="c1"># weighted sum for components i j lagged by offset</span>
+            <span class="c1"># see reference for equation</span>
+
+            <span class="n">wsum_ij</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">w_k</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">product</span><span class="p">(</span><span class="n">lagged_tsn</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">sqrtwsum_i</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">w_k</span> <span class="o">*</span> <span class="n">lagged_tsn</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+            <span class="n">sqrtwsum_j</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">w_k</span> <span class="o">*</span> <span class="n">lagged_tsn</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+
+            <span class="n">rho</span> <span class="o">=</span> <span class="n">wsum_ij</span> <span class="o">/</span> <span class="p">(</span><span class="n">sqrtwsum_i</span> <span class="o">*</span> <span class="n">sqrtwsum_j</span><span class="p">)</span>
+
+            <span class="c1"># wcorr offset diagonal axis 0 coordinate</span>
+
+            <span class="n">drng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">offsets</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">rho</span><span class="p">)])</span>
+            <span class="n">wcorr_ur</span><span class="p">[</span><span class="n">drng</span><span class="p">,</span> <span class="n">drng</span> <span class="o">+</span> <span class="n">offset</span><span class="p">]</span> <span class="o">=</span> <span class="n">rho</span>
+
+        <span class="c1"># get lower left symmetry</span>
+
+        <span class="n">wcorr_ll</span> <span class="o">=</span> <span class="n">wcorr_ur</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+        <span class="c1"># remove diagonal values of lower left triangular matrix</span>
+
+        <span class="n">np</span><span class="o">.</span><span class="n">fill_diagonal</span><span class="p">(</span><span class="n">wcorr_ll</span><span class="p">,</span> <span class="mf">0.</span><span class="p">)</span>
+
+        <span class="c1"># restore symmetry by addition of upperright and lower left</span>
+
+        <span class="n">wcorr</span> <span class="o">=</span> <span class="n">wcorr_ur</span> <span class="o">+</span> <span class="n">wcorr_ll</span>
+
+        <span class="k">return</span> <span class="n">wcorr</span></div>
+
+    <span class="c1"># --------------------------------------------------------</span>
+    <span class="c1"># Private methods</span>
+
+<div class="viewcode-block" id="BasicSsa._embedseries"><a class="viewcode-back" href="../../../tsar.html#tsar.decompose.BasicSsa._embedseries">[docs]</a>    <span class="k">def</span> <span class="nf">_embedseries</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Embed a time series into a L-trajectory matrix</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        x : np.matrix</span>
+<span class="sd">            the trajectory matrix of size (window, k)</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">ts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ts</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">window</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n</span>
+        <span class="n">k</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_k</span>
+
+        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">k</span><span class="p">))</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span><span class="p">):</span>
+            <span class="n">x</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">ts</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span> <span class="o">+</span> <span class="n">w</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="n">x</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="BasicSsa._decompose"><a class="viewcode-back" href="../../../tsar.html#tsar.decompose.BasicSsa._decompose">[docs]</a>    <span class="k">def</span> <span class="nf">_decompose</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Singular value decomposition           </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># rank of the trajectory matrix x</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_xrank</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_x</span>
+        <span class="k">assert</span> <span class="p">(</span><span class="n">d</span> <span class="o">==</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_x</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
+
+        <span class="c1"># decomposition of the trajectory matrix x</span>
+        <span class="c1"># u and v are unitary and s is a 1-d array of d singular values.</span>
+
+        <span class="n">u</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_x</span><span class="p">)</span>
+
+        <span class="c1"># note: types are all np.matrix</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_xi</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
+            <span class="n">si</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>  <span class="c1"># square root of eigenvalue i</span>
+            <span class="n">ui</span> <span class="o">=</span> <span class="n">u</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span>  <span class="c1"># eigenvector i corresponding to si</span>
+            <span class="n">vi</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">T</span> <span class="o">*</span> <span class="n">ui</span> <span class="o">/</span> <span class="n">si</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_xi</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">si</span> <span class="o">*</span> <span class="n">ui</span> <span class="o">*</span> <span class="n">vi</span><span class="o">.</span><span class="n">T</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">svd</span> <span class="o">=</span> <span class="p">[</span><span class="n">u</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">v</span><span class="p">]</span></div>
+
+    <span class="k">def</span> <span class="nf">_getseries</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_matrixgrp</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+
+        <span class="c1"># anti diagonal averaging</span>
+
+        <span class="n">ts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_antidiagmean</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">ts</span>
+
+<div class="viewcode-block" id="BasicSsa._antidiagmean"><a class="viewcode-back" href="../../../tsar.html#tsar.decompose.BasicSsa._antidiagmean">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_antidiagmean</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Average the antidiagonal of matrix</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        matrix : np.matrix</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        </span>
+<span class="sd">        timeseries: np.array</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">ts</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">x</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span><span class="o">.</span><span class="n">diagonal</span><span class="p">(</span><span class="n">i</span><span class="p">))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])]</span>
+
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ts</span><span class="p">)</span></div>
+
+    <span class="c1"># --------------------------------------------------------</span>
+    <span class="c1"># Plotting methods</span>
+
+    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pltname</span><span class="o">=</span><span class="s1">&#39;values&#39;</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">pltkw</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="n">pltname</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plotnames</span><span class="p">:</span>
+            <span class="n">names</span> <span class="o">=</span> <span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_plotnames</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s1">&#39;Unknown plot name </span><span class="se">\&#39;</span><span class="si">{}</span><span class="se">\&#39;</span><span class="s1">. Name should be on of </span><span class="si">{}</span><span class="s1">.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pltname</span><span class="p">,</span> <span class="n">names</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">pltname</span> <span class="o">==</span> <span class="s1">&#39;values&#39;</span><span class="p">:</span>
+            <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value_plot</span><span class="p">(</span><span class="o">**</span><span class="n">pltkw</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">pltname</span> <span class="o">==</span> <span class="s1">&#39;series&#39;</span><span class="p">:</span>
+            <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_series_plot</span><span class="p">(</span><span class="o">**</span><span class="n">pltkw</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">pltname</span> <span class="o">==</span> <span class="s1">&#39;wcorr&#39;</span><span class="p">:</span>
+            <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wcorr_plot</span><span class="p">(</span><span class="o">**</span><span class="n">pltkw</span><span class="p">)</span>
+
+        <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">show</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">_plotnames</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">names</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s1">&#39;values&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;series&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;wcorr&#39;</span>
+        <span class="p">]</span>
+        <span class="k">return</span> <span class="n">names</span>
+
+    <span class="k">def</span> <span class="nf">_value_plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="o">**</span><span class="n">pltkw</span><span class="p">):</span>
+        <span class="n">eigenvalues</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">svd</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">semilogy</span><span class="p">(</span><span class="n">eigenvalues</span><span class="p">[:</span><span class="n">n</span><span class="p">],</span> <span class="s1">&#39;-ok&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mf">4.</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Component Norms&#39;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Index&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span>
+
+    <span class="k">def</span> <span class="nf">_series_plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">pltkw</span><span class="p">):</span>
+
+        <span class="n">groups</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">groups</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">groups</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+
+            <span class="n">fig</span><span class="p">,</span> <span class="n">axarr</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">groups</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">g</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">groups</span><span class="p">):</span>
+                <span class="n">ts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getseries</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+                <span class="n">axarr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="o">**</span><span class="n">pltkw</span><span class="p">)</span>
+                <span class="n">axarr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">groups</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">axarr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Time&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+        <span class="k">return</span> <span class="n">fig</span><span class="p">,</span> <span class="n">axarr</span>
+
+    <span class="k">def</span> <span class="nf">_wcorr_plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+        <span class="n">wcorr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wcorr</span><span class="p">(</span><span class="n">components</span><span class="o">=</span><span class="n">n</span><span class="p">)</span>
+
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
+        <span class="n">im</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">pcolor</span><span class="p">(</span><span class="n">wcorr</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;PiYG&#39;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
+
+        <span class="c1"># set ticks</span>
+
+        <span class="n">ticks</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">wcorr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">ticks</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">minor</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">(</span><span class="n">ticks</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">minor</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">ticks</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">ticks</span><span class="p">)</span>
+
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;w-correlation matrix&#39;</span><span class="p">)</span>
+
+        <span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">im</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span></div>
+
+
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">doctest</span>
+    <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+    <span class="n">doctest</span><span class="o">.</span><span class="n">testmod</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Damien Delforge.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'0.0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

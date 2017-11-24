@@ -67,8 +67,8 @@ def _compute_mi_binned(x, y, bins='sqrt', logfunc=np.log):
 
     Examples
     --------
-    >>> x = tsar.data.lorenz()['x']
-    >>> y = tsar.data.lorenz()['y']
+    >>> x = tsar.datasets.lorenz()['x']
+    >>> y = tsar.datasets.lorenz()['y']
     >>> ami = _compute_mi_binned(x, y)
     >>> print ami
     1.35329070861

@@ -47,7 +47,7 @@ def autocorrelation(ts, maxlag=20):
     Examples
     --------
     
-    >>> ts = tsar.data.lorenz()['x']
+    >>> ts = tsar.datasets.lorenz()['x']
     >>> rho = autocorrelation(ts, maxlag=2)
     >>> print rho
     [0.99999999999999989, 0.9985116968252471, 0.9940665907167473]
@@ -121,6 +121,7 @@ def automutualinfo(ts, maxlag=20, bins='sqrt', logfunc=np.log, method='binned'):
         entire range, including the empty portions. For visualisation,
         using the 'auto' option is suggested. Weighted data is not
         supported for automated bin size selection.
+        
         'auto'
             Maximum of the 'sturges' and 'fd' estimators. Provides good
             all around performance.
@@ -153,7 +154,7 @@ def automutualinfo(ts, maxlag=20, bins='sqrt', logfunc=np.log, method='binned'):
     Examples
     --------
     
-    >>> ts = tsar.data.lorenz()['x'].iloc[:100]
+    >>> ts = tsar.datasets.lorenz()['x'].iloc[:100]
     >>> ami = automutualinfo(ts, maxlag=2, bins='sqrt')
     >>> print ami
     [2.1316557270483645, 1.7303407746505963, 1.5756941465276517]

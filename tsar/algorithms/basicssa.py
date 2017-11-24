@@ -20,8 +20,8 @@ except:
 
 # TODO: test behavior with np.nan in series
 
-class Ssa(object):
-    """A class for Singular Spectrum Analysis 
+class BasicSsa(object):
+    """A class for basic Singular Spectrum Analysis 
     
     Singular Spectrum Analysis (SSA) is a non-parametric method
     to decompose and recompose a signal into specific components:
@@ -44,6 +44,7 @@ class Ssa(object):
     --------
     
     Loading time series
+    
     >>> co2 = pd.read_csv("co2.csv", index_col=0, header=None)
     >>> co2 = co2[co2.columns[0]]
     >>> co2.describe()
@@ -58,9 +59,11 @@ class Ssa(object):
     Name: 1, dtype: float64
     
     Decomposition
-    >>> co2_ssa = Ssa(co2)
+    
+    >>> co2_ssa = BasicSsa(co2)
     
     Reconstruction
+    
     >>> groups = { 'Trend': [0, 3], 'Season': [1,2,4,5] }
     >>> co2_ssa.reconstruct(groups)
     >>> print co2_ssa.groups
@@ -78,6 +81,7 @@ class Ssa(object):
     dtype: float64
     
     Weighted correlation of components
+    
     >>> co2_ssa.wcorr(components=3)
     array([[ 1.        , -0.0124797 ,  0.00814555],
            [-0.0124797 ,  1.        ,  0.97536049],
@@ -152,12 +156,15 @@ class Ssa(object):
         
         """
 
-        groupnames = self._matrixgrp.keys()
+        groups = self._matrixgrp.keys()
 
-        if 'Original' in groupnames:
-            groupnames = ['Original'] + [n for n in groupnames if n != 'Original']
+        if 'Original' in groups:
 
-        return groupnames
+            firstgroup = ['Original']
+            others = [n for n in groups if n != 'Original']
+            sortedgroups = firstgroup + others
+
+        return sortedgroups
 
     # --------------------------------------------------------
     # Public methods

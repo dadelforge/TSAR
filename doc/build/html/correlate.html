@@ -1,0 +1,375 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>tsar.correlate module &mdash; pytsa 0.0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="pytsa 0.0.1 documentation" href="index.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> pytsa
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">tsar.correlate module</a></li>
+</ul>
+</div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">pytsa</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>tsar.correlate module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/correlate.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-tsar.correlate">
+<span id="tsar-correlate-module"></span><h1>tsar.correlate module<a class="headerlink" href="#module-tsar.correlate" title="Permalink to this headline">¶</a></h1>
+<p>Python functions to measure dependencies</p>
+<p>#TODOC</p>
+<dl class="function">
+<dt id="tsar.correlate.autocorrelation">
+<code class="descclassname">tsar.correlate.</code><code class="descname">autocorrelation</code><span class="sig-paren">(</span><em>ts</em>, <em>maxlag=20</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tsar/correlate.html#autocorrelation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tsar.correlate.autocorrelation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Auto Correlation Function</p>
+<p>The auto correlation function is a metric of linear self dependence.</p>
+<p>The pearson moment of correlation is applied to the time series and
+its multiple lags.</p>
+<p>The function returns the Pearson correlation coefficient as a function
+of time lag. Correlation coefficient are stored in list object and the
+lag corresponds to the list index.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>ts</strong> (<em>1d array_like</em>) – Array like holding the time series values. Valid types are list of
+number, dict of number values, numpy 1d array or pandas Series.</li>
+<li><strong>maxlag</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – Maximum lag to compute autocorrelation.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>autocorrelation</strong> – List holding autocorrelation values up to maxlag</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ts</span> <span class="o">=</span> <span class="n">tsar</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">lorenz</span><span class="p">()[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rho</span> <span class="o">=</span> <span class="n">autocorrelation</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="n">maxlag</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="n">rho</span>
+<span class="go">[0.99999999999999989, 0.9985116968252471, 0.9940665907167473]</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><code class="xref py py-exc docutils literal"><span class="pre">TypeError</span></code> – Raised if input is not one dimensional numeric.</li>
+<li><code class="xref py py-exc docutils literal"><span class="pre">IndexError</span></code> – Raised if maxlag greater than time series length.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="tsar.correlate.automutualinfo">
+<code class="descclassname">tsar.correlate.</code><code class="descname">automutualinfo</code><span class="sig-paren">(</span><em>ts</em>, <em>maxlag=20</em>, <em>bins='sqrt'</em>, <em>logfunc=&lt;ufunc 'log'&gt;</em>, <em>method='binned'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tsar/correlate.html#automutualinfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tsar.correlate.automutualinfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Auto Mutual Information</p>
+<p>Compute the discrete mutual information between time series and its
+successive lags. The discrete mutual information is given by:</p>
+<div class="math">
+\[MI(X,Y)=\sum_{x \in X}^R \sum_{y \in Y} P(x,y)\log\frac{P(x,y)}{P(x)P'(y)}\]</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>ts</strong> (<em>1d array_like</em>) – Array like holding the time series values. Valid types are list of
+number, dict of number values, numpy 1d array or pandas Series.</li>
+<li><strong>maxlag</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – Maximum lag to compute auto mutual information.</li>
+<li><strong>bins</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a><em> or </em><em>sequence of scalars</em><em> or </em><a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a><em>, </em><em>optional</em>) – <p>If <cite>bins</cite> is an int, it defines the number of equal-width
+bins in the given range. If <cite>bins</cite> is a sequence, it defines
+the bin edges, including the rightmost edge, allowing for
+non-uniform bin widths.
+.. versionadded:: numpy 1.11.0
+If <cite>bins</cite> is a string from the list below, <cite>histogram</cite> will use
+the method chosen to calculate the optimal bin width and
+consequently the number of bins (see [3] for more detail on
+the estimators) from the data that falls within the requested
+range. While the bin width will be optimal for the actual data
+in the range, the number of bins will be computed to fill the
+entire range, including the empty portions. For visualisation,
+using the ‘auto’ option is suggested. Weighted data is not
+supported for automated bin size selection.</p>
+<dl class="docutils">
+<dt>’auto’</dt>
+<dd>Maximum of the ‘sturges’ and ‘fd’ estimators. Provides good
+all around performance.</dd>
+<dt>’fd’ (Freedman Diaconis Estimator)</dt>
+<dd>Robust (resilient to outliers) estimator that takes into
+account data variability and data size.</dd>
+<dt>’doane’</dt>
+<dd>An improved version of Sturges’ estimator that works better
+with non-normal datasets.</dd>
+<dt>’scott’</dt>
+<dd>Less robust estimator that that takes into account data
+variability and data size.</dd>
+<dt>’rice’</dt>
+<dd>Estimator does not take variability into account, only data
+size. Commonly overestimates number of bins required.</dd>
+<dt>’sturges’</dt>
+<dd>R’s default method, only accounts for data size. Only
+optimal for gaussian data and underestimates number of bins
+for large non-gaussian datasets.</dd>
+<dt>’sqrt’</dt>
+<dd>Square root (of data size) estimator, used by Excel and
+other programs for its speed and simplicity. This is
+default.</dd>
+</dl>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>automi</strong> – List holding auto mutual information values up to maxlag.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ts</span> <span class="o">=</span> <span class="n">tsar</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">lorenz</span><span class="p">()[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:</span><span class="mi">100</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ami</span> <span class="o">=</span> <span class="n">automutualinfo</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="n">maxlag</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="s1">&#39;sqrt&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="n">ami</span>
+<span class="go">[2.1316557270483645, 1.7303407746505963, 1.5756941465276517]</span>
+</pre></div>
+</div>
+<p class="rubric">References</p>
+<dl class="docutils">
+<dt>[1] Kraskov, Alexander, Harald Stoegbauer, and Peter Grassberger.</dt>
+<dd>“Estimating Mutual Information.” Physical Review E 69, no. 6 (June 23, 2004).
+<a class="reference external" href="https://doi.org/10.1103/PhysRevE.69.066138">https://doi.org/10.1103/PhysRevE.69.066138</a>.</dd>
+<dt>[1] Sklearn: Mutual Information between two clusterings</dt>
+<dd><a class="reference external" href="http://scikit-learn.org/stable/modules/generated/sklearn.metrics.mutual_info_score.html">http://scikit-learn.org/stable/modules/generated/sklearn.metrics.mutual_info_score.html</a></dd>
+<dt>[2] numpy.histogram2d</dt>
+<dd><a class="reference external" href="https://docs.scipy.org/doc/numpy-1.13.0/reference/generated/numpy.histogram2d.html">https://docs.scipy.org/doc/numpy-1.13.0/reference/generated/numpy.histogram2d.html</a></dd>
+<dt>[3] numpy.histogram</dt>
+<dd><a class="reference external" href="https://docs.scipy.org/doc/numpy-1.13.0/reference/generated/numpy.histogram.html">https://docs.scipy.org/doc/numpy-1.13.0/reference/generated/numpy.histogram.html</a></dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="tsar.correlate.crosscorrelation">
+<code class="descclassname">tsar.correlate.</code><code class="descname">crosscorrelation</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tsar/correlate.html#crosscorrelation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tsar.correlate.crosscorrelation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="tsar.correlate.crossmutualinfo">
+<code class="descclassname">tsar.correlate.</code><code class="descname">crossmutualinfo</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tsar/correlate.html#crossmutualinfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tsar.correlate.crossmutualinfo" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Damien Delforge.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

@@ -1,0 +1,457 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>tsar.correlate &mdash; pytsa 0.0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../genindex.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="pytsa 0.0.1 documentation" href="../../index.html"/>
+        <link rel="up" title="Module code" href="../index.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> pytsa
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../gettingstarted.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../apidoc.html">API documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">pytsa</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>tsar.correlate</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for tsar.correlate</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Python functions to measure dependencies </span>
+
+<span class="sd">#TODOC</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1"># TODO: Add top level documentation</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="k">import</span> <span class="n">mutual_info_score</span>
+
+<span class="kn">import</span> <span class="nn">tsar</span>
+<span class="kn">from</span> <span class="nn">tsar.dtypes</span> <span class="k">import</span> <span class="n">is_1darray_like</span>
+<span class="kn">from</span> <span class="nn">tsar.algorithms.mutualinformation</span> <span class="k">import</span> <span class="n">_compute_mi_binned</span>
+
+
+<span class="c1"># ----------------------------------------------------------------------</span>
+<span class="c1"># Self dependency functions</span>
+
+
+<div class="viewcode-block" id="autocorrelation"><a class="viewcode-back" href="../../correlate.html#tsar.correlate.autocorrelation">[docs]</a><span class="k">def</span> <span class="nf">autocorrelation</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="n">maxlag</span><span class="o">=</span><span class="mi">20</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Auto Correlation Function</span>
+<span class="sd">    </span>
+<span class="sd">    The auto correlation function is a metric of linear self dependence.</span>
+<span class="sd">    </span>
+<span class="sd">    The pearson moment of correlation is applied to the time series and</span>
+<span class="sd">    its multiple lags.</span>
+<span class="sd">    </span>
+<span class="sd">    The function returns the Pearson correlation coefficient as a function</span>
+<span class="sd">    of time lag. Correlation coefficient are stored in list object and the</span>
+<span class="sd">    lag corresponds to the list index. </span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ts : 1d array_like</span>
+<span class="sd">        Array like holding the time series values. Valid types are list of </span>
+<span class="sd">        number, dict of number values, numpy 1d array or pandas Series.</span>
+<span class="sd">    maxlag : int</span>
+<span class="sd">        Maximum lag to compute autocorrelation.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    autocorrelation : list</span>
+<span class="sd">        List holding autocorrelation values up to maxlag</span>
+<span class="sd">    </span>
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    </span>
+<span class="sd">    &gt;&gt;&gt; ts = tsar.datasets.lorenz()[&#39;x&#39;]</span>
+<span class="sd">    &gt;&gt;&gt; rho = autocorrelation(ts, maxlag=2)</span>
+<span class="sd">    &gt;&gt;&gt; print rho</span>
+<span class="sd">    [0.99999999999999989, 0.9985116968252471, 0.9940665907167473]</span>
+<span class="sd">    </span>
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    TypeError</span>
+<span class="sd">        Raised if input is not one dimensional numeric.</span>
+<span class="sd">    IndexError</span>
+<span class="sd">        Raised if maxlag greater than time series length.</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># TODO: prefer not using pandas to lower dependencies</span>
+    <span class="c1"># TODO: draft doc to be improved</span>
+
+    <span class="c1"># test for one-dimensional object</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">is_1darray_like</span><span class="p">(</span><span class="n">ts</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;Input object should be 1 dimensional numeric array like object.&#39;</span><span class="p">)</span>
+
+    <span class="c1"># test for Index error</span>
+
+    <span class="k">if</span> <span class="n">maxlag</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">ts</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="s1">&#39;Maximum lag </span><span class="si">{}</span><span class="s1"> is greater than series length </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">maxlag</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">ts</span><span class="p">)))</span>
+
+    <span class="c1"># list of lags</span>
+
+    <span class="n">lags</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="n">maxlag</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># conversion of ts into a pd.Series</span>
+
+    <span class="n">ts</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">ts</span><span class="p">)</span>
+
+    <span class="n">autocorr</span> <span class="o">=</span> <span class="p">[</span><span class="n">ts</span><span class="o">.</span><span class="n">autocorr</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">lags</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">autocorr</span></div>
+
+
+<div class="viewcode-block" id="automutualinfo"><a class="viewcode-back" href="../../correlate.html#tsar.correlate.automutualinfo">[docs]</a><span class="k">def</span> <span class="nf">automutualinfo</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="n">maxlag</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="s1">&#39;sqrt&#39;</span><span class="p">,</span> <span class="n">logfunc</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;binned&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Auto Mutual Information</span>
+<span class="sd">    </span>
+<span class="sd">    Compute the discrete mutual information between time series and its </span>
+<span class="sd">    successive lags. The discrete mutual information is given by:</span>
+<span class="sd">    </span>
+<span class="sd">    .. math::</span>
+
+<span class="sd">        MI(X,Y)=\sum_{x \in X}^R \sum_{y \in Y} P(x,y)\log\\frac{P(x,y)}{P(x)P&#39;(y)}</span>
+<span class="sd">        </span>
+<span class="sd">        </span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ts : 1d array_like</span>
+<span class="sd">        Array like holding the time series values. Valid types are list of </span>
+<span class="sd">        number, dict of number values, numpy 1d array or pandas Series.</span>
+<span class="sd">    maxlag : int</span>
+<span class="sd">        Maximum lag to compute auto mutual information.</span>
+<span class="sd">    bins : int or sequence of scalars or str, optional</span>
+<span class="sd">        If `bins` is an int, it defines the number of equal-width</span>
+<span class="sd">        bins in the given range. If `bins` is a sequence, it defines </span>
+<span class="sd">        the bin edges, including the rightmost edge, allowing for </span>
+<span class="sd">        non-uniform bin widths.</span>
+<span class="sd">        .. versionadded:: numpy 1.11.0</span>
+<span class="sd">        If `bins` is a string from the list below, `histogram` will use</span>
+<span class="sd">        the method chosen to calculate the optimal bin width and</span>
+<span class="sd">        consequently the number of bins (see [3] for more detail on</span>
+<span class="sd">        the estimators) from the data that falls within the requested</span>
+<span class="sd">        range. While the bin width will be optimal for the actual data</span>
+<span class="sd">        in the range, the number of bins will be computed to fill the</span>
+<span class="sd">        entire range, including the empty portions. For visualisation,</span>
+<span class="sd">        using the &#39;auto&#39; option is suggested. Weighted data is not</span>
+<span class="sd">        supported for automated bin size selection.</span>
+<span class="sd">        </span>
+<span class="sd">        &#39;auto&#39;</span>
+<span class="sd">            Maximum of the &#39;sturges&#39; and &#39;fd&#39; estimators. Provides good</span>
+<span class="sd">            all around performance.</span>
+<span class="sd">        &#39;fd&#39; (Freedman Diaconis Estimator)</span>
+<span class="sd">            Robust (resilient to outliers) estimator that takes into</span>
+<span class="sd">            account data variability and data size.</span>
+<span class="sd">        &#39;doane&#39;</span>
+<span class="sd">            An improved version of Sturges&#39; estimator that works better</span>
+<span class="sd">            with non-normal datasets.</span>
+<span class="sd">        &#39;scott&#39;</span>
+<span class="sd">            Less robust estimator that that takes into account data</span>
+<span class="sd">            variability and data size.</span>
+<span class="sd">        &#39;rice&#39;</span>
+<span class="sd">            Estimator does not take variability into account, only data</span>
+<span class="sd">            size. Commonly overestimates number of bins required.</span>
+<span class="sd">        &#39;sturges&#39;</span>
+<span class="sd">            R&#39;s default method, only accounts for data size. Only</span>
+<span class="sd">            optimal for gaussian data and underestimates number of bins</span>
+<span class="sd">            for large non-gaussian datasets.</span>
+<span class="sd">        &#39;sqrt&#39;</span>
+<span class="sd">            Square root (of data size) estimator, used by Excel and</span>
+<span class="sd">            other programs for its speed and simplicity. This is </span>
+<span class="sd">            default.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    automi : list</span>
+<span class="sd">        List holding auto mutual information values up to maxlag.</span>
+<span class="sd">        </span>
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    </span>
+<span class="sd">    &gt;&gt;&gt; ts = tsar.datasets.lorenz()[&#39;x&#39;].iloc[:100]</span>
+<span class="sd">    &gt;&gt;&gt; ami = automutualinfo(ts, maxlag=2, bins=&#39;sqrt&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; print ami</span>
+<span class="sd">    [2.1316557270483645, 1.7303407746505963, 1.5756941465276517]</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    </span>
+<span class="sd">    [1] Kraskov, Alexander, Harald Stoegbauer, and Peter Grassberger. </span>
+<span class="sd">        &quot;Estimating Mutual Information.&quot; Physical Review E 69, no. 6 (June 23, 2004). </span>
+<span class="sd">        https://doi.org/10.1103/PhysRevE.69.066138.</span>
+
+<span class="sd">    [1] Sklearn: Mutual Information between two clusterings</span>
+<span class="sd">        http://scikit-learn.org/stable/modules/generated/sklearn.metrics.mutual_info_score.html</span>
+<span class="sd">    [2] numpy.histogram2d</span>
+<span class="sd">        https://docs.scipy.org/doc/numpy-1.13.0/reference/generated/numpy.histogram2d.html</span>
+<span class="sd">    [3] numpy.histogram</span>
+<span class="sd">        https://docs.scipy.org/doc/numpy-1.13.0/reference/generated/numpy.histogram.html</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1">#TODO : draft documentation to be improved</span>
+
+    <span class="c1"># check for one-dimensional object</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">is_1darray_like</span><span class="p">(</span><span class="n">ts</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;Input object should be 1 dimensional numeric array like object.&#39;</span><span class="p">)</span>
+
+    <span class="c1"># check for Index error</span>
+
+    <span class="k">if</span> <span class="n">maxlag</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">ts</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="s1">&#39;Maximum lag </span><span class="si">{}</span><span class="s1"> is greater than series length </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">maxlag</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">ts</span><span class="p">)))</span>
+
+    <span class="c1"># check for method</span>
+
+    <span class="k">if</span> <span class="n">method</span> <span class="o">!=</span> <span class="s1">&#39;binned&#39;</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+            <span class="s1">&#39;Not implemented method </span><span class="si">{}</span><span class="s1">. Only binned method is currently supported.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">method</span><span class="p">))</span>
+
+    <span class="c1"># conversion of ts into a pd.Series</span>
+
+    <span class="n">ts</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">ts</span><span class="p">)</span>
+
+    <span class="c1"># list of lags</span>
+
+    <span class="n">lags</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="n">maxlag</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># use numpy histogram to get bins</span>
+
+    <span class="c1">#bin_edges = np.histogram(ts.values, bins=bins)[1]</span>
+
+    <span class="c1"># define auto mutual information list</span>
+    <span class="n">automi</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">lags</span><span class="p">:</span>
+
+        <span class="n">ts_lag</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+
+        <span class="n">x</span> <span class="o">=</span> <span class="n">ts</span><span class="p">[</span><span class="n">t</span><span class="p">:]</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">ts_lag</span><span class="p">[</span><span class="n">t</span><span class="p">:]</span>
+
+        <span class="n">mi</span> <span class="o">=</span> <span class="n">_compute_mi_binned</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">bins</span><span class="p">,</span> <span class="n">logfunc</span><span class="o">=</span><span class="n">logfunc</span><span class="p">)</span>
+
+        <span class="n">automi</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mi</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">automi</span></div>
+
+<div class="viewcode-block" id="crosscorrelation"><a class="viewcode-back" href="../../correlate.html#tsar.correlate.crosscorrelation">[docs]</a><span class="k">def</span> <span class="nf">crosscorrelation</span><span class="p">():</span>
+    <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="crossmutualinfo"><a class="viewcode-back" href="../../correlate.html#tsar.correlate.crossmutualinfo">[docs]</a><span class="k">def</span> <span class="nf">crossmutualinfo</span><span class="p">():</span>
+    <span class="k">pass</span></div>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">doctest</span>
+
+    <span class="n">doctest</span><span class="o">.</span><span class="n">testmod</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Damien Delforge.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

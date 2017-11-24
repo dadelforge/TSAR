@@ -1,0 +1,4 @@
+Module ´decompose´
+##################
+
+.. automodule:: decompose

@@ -1,0 +1,4 @@
+Module ´chaos´
+##############
+
+.. automodule:: chaos

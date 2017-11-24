@@ -1,0 +1,373 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>tsar.decompose module &mdash; pytsa 0.0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="pytsa 0.0.1 documentation" href="index.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> pytsa
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">tsar.decompose module</a><ul>
+<li><a class="reference internal" href="#tsar-decompose-ssa">tsar.decompose.Ssa</a></li>
+</ul>
+</li>
+</ul>
+</div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">pytsa</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>tsar.decompose module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/tsar.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-tsar.decompose">
+<span id="tsar-decompose-module"></span><h1>tsar.decompose module<a class="headerlink" href="#module-tsar.decompose" title="Permalink to this headline">¶</a></h1>
+<p>The <strong>decompose</strong> module is Lorem ipsum.</p>
+<div class="section" id="tsar-decompose-ssa">
+<h2>tsar.decompose.Ssa<a class="headerlink" href="#tsar-decompose-ssa" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="tsar.decompose.BasicSsa">
+<em class="property">class </em><code class="descclassname">tsar.decompose.</code><code class="descname">BasicSsa</code><span class="sig-paren">(</span><em>ts</em>, <em>window=None</em>, <em>tstype=&lt;class 'pandas.core.series.Series'&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tsar/algorithms/basicssa.html#BasicSsa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tsar.decompose.BasicSsa" title="Permalink to this definition">¶</a></dt>
+<dd><p>A class for basic Singular Spectrum Analysis</p>
+<p>Singular Spectrum Analysis (SSA) is a non-parametric method
+to decompose and recompose a signal into specific components:
+trend, seasonality, noise, …</p>
+<p>The method consists in embedding the time series into a
+trajectory matrix. The matrix is then decomposed into
+eigentriples using singular value decomposition. Eigentriples
+can be grouped by user. Each group can be recomposed into a
+time series component.</p>
+<p>Grouping can be user defined based on the interpretation of
+the singular value plot or the w-corr plot.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>#TODOC</strong> – </td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<p>Loading time series</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">co2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;co2.csv&quot;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">co2</span> <span class="o">=</span> <span class="n">co2</span><span class="p">[</span><span class="n">co2</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">co2</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+<span class="go">count    468.000000</span>
+<span class="go">mean     337.053526</span>
+<span class="go">std       14.966220</span>
+<span class="go">min      313.180000</span>
+<span class="go">25%      323.530000</span>
+<span class="go">50%      335.170000</span>
+<span class="go">75%      350.255000</span>
+<span class="go">max      366.840000</span>
+<span class="go">Name: 1, dtype: float64</span>
+</pre></div>
+</div>
+<p>Decomposition</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">co2_ssa</span> <span class="o">=</span> <span class="n">BasicSsa</span><span class="p">(</span><span class="n">co2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Reconstruction</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">groups</span> <span class="o">=</span> <span class="p">{</span> <span class="s1">&#39;Trend&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="s1">&#39;Season&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span> <span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">co2_ssa</span><span class="o">.</span><span class="n">reconstruct</span><span class="p">(</span><span class="n">groups</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="n">co2_ssa</span><span class="o">.</span><span class="n">groups</span>
+<span class="go">[&#39;Original&#39;, &#39;Trend&#39;, &#39;Season&#39;, &#39;Residuals&#39;]</span>
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">co2_ssa</span><span class="p">[</span><span class="s1">&#39;Season&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+<span class="go">count    468.000000</span>
+<span class="go">mean      -0.002320</span>
+<span class="go">std        2.055533</span>
+<span class="go">min       -3.461722</span>
+<span class="go">25%       -1.883337</span>
+<span class="go">50%        0.291613</span>
+<span class="go">75%        1.757231</span>
+<span class="go">max        3.301371</span>
+<span class="go">dtype: float64</span>
+</pre></div>
+</div>
+<p>Weighted correlation of components</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">co2_ssa</span><span class="o">.</span><span class="n">wcorr</span><span class="p">(</span><span class="n">components</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">array([[ 1.        , -0.0124797 ,  0.00814555],</span>
+<span class="go">       [-0.0124797 ,  1.        ,  0.97536049],</span>
+<span class="go">       [ 0.00814555,  0.97536049,  1.        ]])</span>
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">co2_ssa</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;wcorr&#39;</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="rubric">References</p>
+<p>[1] Singular Spectrum Analysis for Time Series | Nina Golyandina | Springer.
+Accessed November 19, 2017. //www.springer.com/gp/book/9783642349126.</p>
+<dl class="attribute">
+<dt id="tsar.decompose.BasicSsa.__weakref__">
+<code class="descname">__weakref__</code><a class="headerlink" href="#tsar.decompose.BasicSsa.__weakref__" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="tsar.decompose.BasicSsa._antidiagmean">
+<em class="property">static </em><code class="descname">_antidiagmean</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tsar/algorithms/basicssa.html#BasicSsa._antidiagmean"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tsar.decompose.BasicSsa._antidiagmean" title="Permalink to this definition">¶</a></dt>
+<dd><p>Average the antidiagonal of matrix</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>matrix</strong> (<em>np.matrix</em>) – </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>timeseries</strong></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">np.array</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="tsar.decompose.BasicSsa._decompose">
+<code class="descname">_decompose</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tsar/algorithms/basicssa.html#BasicSsa._decompose"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tsar.decompose.BasicSsa._decompose" title="Permalink to this definition">¶</a></dt>
+<dd><p>Singular value decomposition</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="tsar.decompose.BasicSsa._embedseries">
+<code class="descname">_embedseries</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tsar/algorithms/basicssa.html#BasicSsa._embedseries"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tsar.decompose.BasicSsa._embedseries" title="Permalink to this definition">¶</a></dt>
+<dd><p>Embed a time series into a L-trajectory matrix</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>x</strong> – the trajectory matrix of size (window, k)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">np.matrix</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="tsar.decompose.BasicSsa.groups">
+<code class="descname">groups</code><a class="headerlink" href="#tsar.decompose.BasicSsa.groups" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of reconstructed group names</p>
+<p>Group names are ordered so that the first one corresponds
+the the ‘Original’ time series group and the last one to
+the ‘Residuals’.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="tsar.decompose.BasicSsa.wcorr">
+<code class="descname">wcorr</code><span class="sig-paren">(</span><em>components=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tsar/algorithms/basicssa.html#BasicSsa.wcorr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tsar.decompose.BasicSsa.wcorr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the weighted correlation matrix</p>
+<p>See equation in ref [1], paragraph separability</p>
+<p class="rubric">References</p>
+<p>[1] Hassani, Hossein. “Singular Spectrum Analysis: Methodology and Comparison.”
+MPRA Paper, April 1, 2007. <a class="reference external" href="https://mpra.ub.uni-muenchen.de/4991/">https://mpra.ub.uni-muenchen.de/4991/</a>.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Damien Delforge.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
